@@ -50,9 +50,9 @@ kindToString kind =
         OwnItem Farm _->
             "04Farm"
         OwnItem Factory _->
-            "05Factory"
+            "06Factory"
         OwnItem Mine _->
-            "06Mine"
+            "05Mine"
 
 groupAchievements : List Achievement -> List ( String, List Achievement )
 groupAchievements achievements =
