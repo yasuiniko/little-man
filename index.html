@@ -1,0 +1,71 @@
+<html>
+<head style="background-color:#0b1220">
+  <meta charset="UTF-8">
+  <title>Main</title>
+  <script src="main.js"></script>
+</head>
+
+<body style="background-color:#0b1220">
+  <div id="myapp"></div>
+  <script>
+    var app = Elm.Main.init({
+        node: document.getElementById('myapp')
+    });
+    var sounds = {
+        click: new Audio('audio/click1.mov'),
+        store: new Audio('audio/store.mov'),
+        achievement: new Audio('audio/achievement.mov'),
+        clickAch: "",
+        storeAch: "",
+    };
+
+    let isPlaying = false; // Our "lock"
+    app.ports.playSound.subscribe(function(type) {
+        // If we are currently playing a prioritized sequence, ignore new requests
+        if (isPlaying) return;
+
+        const playSequence = (types) => {
+            isPlaying = true;
+            
+            // Internal helper to play an array of sounds one after another
+            const playNext = (index) => {
+                if (index >= types.length) {
+                    isPlaying = false; // Release the lock
+                    return;
+                }
+
+                let soundName = types[index];
+                let audioAsset = sounds[soundName];
+                
+                if (audioAsset) {
+                    let instance = audioAsset.cloneNode();
+                    instance.onended = () => playNext(index + 1);
+                    instance.play().catch(e => {
+                        console.error("Playback failed", e);
+                        isPlaying = false; 
+                    });
+                } else {
+                    playNext(index + 1);
+                }
+            };
+
+            playNext(0);
+        };
+
+        // Define your logic for different message types
+        if (type === "clickAch") {
+            playSequence(["click", "achievement"]);
+        } else if (type === "storeAch") {
+            playSequence(["store", "achievement"]);
+        } else {
+            // Normal sounds play without blocking OR you can make them block too:
+            let s = sounds[type];
+            if (s) {
+                let instance = s.cloneNode();
+                instance.play();
+            }
+        }
+    });
+  </script>
+</body>
+</html>
