@@ -6,65 +6,99 @@
 </head>
 
 <body style="background-color:#0b1220">
-<script>
-document.getElementById('unlockAudio').addEventListener('click', async () => {
-    // create audioCtx if it doesn't exist yet
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-
-    // resume if suspended (required for autoplay policy)
-    if (audioCtx.state === 'suspended') {
-        await audioCtx.resume();
-    }
-});
-</script>
-
   <div id="myapp"></div>
     <script>
     var app = Elm.Main.init({ node: document.getElementById('myapp') });
 
-    // Lazy audio context (created on first user gesture/play)
+    // --- AUDIO STATE ---
     let audioCtx = null;
     let soundsLoaded = false;
     const soundLibrary = { click: null, store: null, achievement: null };
+    
+    // Playback control
     let blockUntil = 0;
 
-    async function ensureAudioReady() {
+    // --- INITIALIZATION & RECOVERY ---
+
+    // 1. Initialize or Resume Audio Context
+    async function initAudioContext() {
         if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+            // IMPORTANT: If we created a new context, time resets to 0. 
+            // We must reset our blocking logic or we might block sound for a long time.
+            blockUntil = 0; 
         }
-        // resume if suspended (must be from a user gesture in many browsers)
+
         if (audioCtx.state === 'suspended') {
-        try { await audioCtx.resume(); } catch (e) { console.warn('resume failed', e); }
+            try {
+                await audioCtx.resume();
+            } catch (e) {
+                console.warn('Audio resume failed (waiting for user gesture)', e);
+            }
         }
+        
+        // Start loading sounds immediately after context creation
         if (!soundsLoaded) {
-        // load and decode all sounds in parallel
-        await Promise.all([
-            loadSound('click', 'audio/click1.wav'),
-            loadSound('store', 'audio/store.wav'),
-            loadSound('achievement', 'audio/achievement.wav'),
-        ]);
-        soundsLoaded = true;
+            await loadAllSounds();
+        }
+    }
+
+    // 2. Load all assets
+    async function loadAllSounds() {
+        try {
+            await Promise.all([
+                loadSound('click', 'audio/click1.wav'),
+                loadSound('store', 'audio/store.wav'),
+                loadSound('achievement', 'audio/achievement.wav'),
+            ]);
+            soundsLoaded = true;
+            console.log("Audio system ready.");
+        } catch (e) {
+            console.error("Partial sound load failure:", e);
         }
     }
 
     async function loadSound(name, url) {
         try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const arrayBuffer = await response.arrayBuffer();
-        // decodeAudioData returns a Promise in modern browsers
-        soundLibrary[name] = await audioCtx.decodeAudioData(arrayBuffer);
-        console.log(`Loaded: ${name}`);
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const arrayBuffer = await response.arrayBuffer();
+            soundLibrary[name] = await audioCtx.decodeAudioData(arrayBuffer);
         } catch (e) {
-        console.error(`Failed to load sound "${name}" from ${url}:`, e);
-        soundLibrary[name] = null;
+            console.error(`Failed to load ${name}:`, e);
         }
     }
 
+    // --- EVENT LISTENERS ---
+
+    // 3. Handle Tab Switching (The fix for your specific issue)
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            // When user comes back, force a resume check
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+    });
+
+    // 4. Global Unlocker (One-time run on ANY user interaction)
+    const interactionEvents = ['click', 'touchstart', 'keydown'];
+    const unlockAudio = async () => {
+        await initAudioContext();
+        // Remove listeners once audio is initialized/resumed successfully
+        if (audioCtx && audioCtx.state === 'running') {
+            interactionEvents.forEach(e => document.removeEventListener(e, unlockAudio));
+        }
+    };
+    interactionEvents.forEach(e => document.addEventListener(e, unlockAudio));
+
+
+    // --- PLAYBACK ENGINE ---
+
     function playBuffer(buffer, time, volume = 1.0) {
-        if (!buffer) return 0;
+        if (!buffer || !audioCtx) return 0;
+        
         const source = audioCtx.createBufferSource();
         const gainNode = audioCtx.createGain();
 
@@ -74,72 +108,61 @@ document.getElementById('unlockAudio').addEventListener('click', async () => {
         source.connect(gainNode);
         gainNode.connect(audioCtx.destination);
 
-        // schedule start; provide a fallback to currentTime
         const startAt = (typeof time === 'number' && !isNaN(time)) ? time : audioCtx.currentTime;
         source.start(startAt);
         return buffer.duration || 0;
     }
 
+    // --- ELM SUBSCRIPTION ---
+
     app.ports.playSound.subscribe(async function(type) {
-        // Ensure audio context exists and sounds are decoded.
-        // This will resume/create audio only when the user triggers a port call.
-        try {
-        await ensureAudioReady();
-        } catch (e) {
-        console.error('Audio init failed', e);
-        return;
+        // Just in case init failed or hasn't happened
+        if (!audioCtx || audioCtx.state === 'suspended') {
+            await initAudioContext();
         }
+
+        // If still suspended (browser denied autoplay), we can't play
+        if (!audioCtx || audioCtx.state === 'suspended') return;
 
         const now = audioCtx.currentTime;
 
-        // ignore if a priority sequence is playing
+        // Block logic
         if (now < blockUntil) return;
 
         switch (type) {
-        case 'click':
-            playBuffer(soundLibrary.click, now, 0.3);
-            break;
+            case 'click':
+                playBuffer(soundLibrary.click, now, 0.3);
+                break;
 
-        case 'store':
-            playBuffer(soundLibrary.store, now);
-            break;
+            case 'store':
+                playBuffer(soundLibrary.store, now);
+                break;
 
-        case 'achievement': {
-            const d = playBuffer(soundLibrary.achievement, now);
-            // blockUntil = now + d;
-            break;
-        }
-
-        case 'clickAch':
-            if (soundLibrary.click && soundLibrary.achievement) {
-            const d1 = playBuffer(soundLibrary.click, now, 0.3);;
-            const d2 = playBuffer(soundLibrary.achievement, now + d1);
-            blockUntil = now + d1 + d2;
+            case 'achievement': {
+                playBuffer(soundLibrary.achievement, now);
+                break;
             }
-            break;
 
-        case 'storeAch':
-            if (soundLibrary.store && soundLibrary.achievement) {
-            const d1 = playBuffer(soundLibrary.store, now);;
-            const d2 = playBuffer(soundLibrary.achievement, now + d1);
-            blockUntil = now + d1 + d2;
-            }
-            break;
+            case 'clickAch':
+                if (soundLibrary.click && soundLibrary.achievement) {
+                    const d1 = playBuffer(soundLibrary.click, now, 0.3);
+                    const d2 = playBuffer(soundLibrary.achievement, now + d1);
+                    blockUntil = now + d1 + d2;
+                }
+                break;
 
-        default:
-            console.warn('Unknown sound type:', type);
+            case 'storeAch':
+                if (soundLibrary.store && soundLibrary.achievement) {
+                    const d1 = playBuffer(soundLibrary.store, now);
+                    const d2 = playBuffer(soundLibrary.achievement, now + d1);
+                    blockUntil = now + d1 + d2;
+                }
+                break;
+
+            default:
+                console.warn('Unknown sound type:', type);
         }
     });
-
-    // Optional: if you want to proactively unlock audio on any user gesture (helpful for mobile)
-    document.addEventListener('click', function unlockOnce() {
-        if (!audioCtx) return; // will be created lazily anyway
-        if (audioCtx.state === 'suspended') {
-        audioCtx.resume().catch(e => console.warn('unlock resume failed', e));
-        }
-        document.removeEventListener('click', unlockOnce);
-    });
-    </script>
-
+</script>
 </body>
 </html>
