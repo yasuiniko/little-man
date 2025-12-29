@@ -6533,10 +6533,19 @@ var $author$project$View$globalStyles = A3(
 		[
 			$elm$html$Html$text('\n        .app-container { max-width: 1100px; margin: 0 auto; }\n        .grid-layout { display: grid; grid-template-columns: 360px 1fr; gap: 24px; }\n        .panel { background: #0b1220; padding: 24px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }\n        .btn-buy { background: linear-gradient(90deg, #f59e0b, #f97316); border: none; padding: 8px 16px; border-radius: 6px; color: #061421; font-weight: bold; cursor: pointer; transition: transform 0.1s; }\n        .btn-buy:active:not([disabled]) { transform: scale(0.95); }\n        .btn-buy:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }\n        \n        /* poop Animation */\n        .poop-btn { transition: transform 0.05s; user-select: none; cursor: pointer; display: block; margin: 0 auto; border-radius: 50%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }\n        .poop-btn:active { transform: scale(0.94); }\n        \n        /* Animations for Notifications */\n        @keyframes slideIn {\n            from { transform: translateX(100%); opacity: 0; }\n            to { transform: translateX(0); opacity: 1; }\n        }\n        .notification-toast {\n            animation: slideIn 0.3s ease-out forwards;\n        }\n\n        @media (max-width: 800px) {\n            .grid-layout { grid-template-columns: 1fr; }\n        }\n    ')
 		]));
+var $elm$html$Html$a = _VirtualDom_node('a');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$header = _VirtualDom_node('header');
+var $elm$html$Html$Attributes$href = function (url) {
+	return A2(
+		$elm$html$Html$Attributes$stringProperty,
+		'href',
+		_VirtualDom_noJavaScriptUri(url));
+};
+var $elm$html$Html$i = _VirtualDom_node('i');
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
 var $author$project$View$headerView = A2(
 	$elm$html$Html$header,
 	_List_fromArray(
@@ -6558,6 +6567,40 @@ var $author$project$View$headerView = A2(
 			_List_fromArray(
 				[
 					$elm$html$Html$text('Squeeze Him')
+				])),
+			A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					A2($elm$html$Html$Attributes$style, 'font-size', '14px'),
+					A2($elm$html$Html$Attributes$style, 'text-align', 'center')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$a,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$href('https://github.com/yasuiniko/little-man'),
+							$elm$html$Html$Attributes$target('_blank'),
+							A2($elm$html$Html$Attributes$style, 'text-decoration', 'none'),
+							A2($elm$html$Html$Attributes$style, 'color', 'inherit'),
+							A2($elm$html$Html$Attributes$style, 'display', 'inline-flex'),
+							A2($elm$html$Html$Attributes$style, 'flex-direction', 'column'),
+							A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
+							A2($elm$html$Html$Attributes$style, 'gap', '5px')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$i,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class('fa-brands fa-github'),
+									A2($elm$html$Html$Attributes$style, 'font-size', '24px')
+								]),
+							_List_Nil)
+						]))
 				]))
 		]));
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
@@ -6582,10 +6625,10 @@ var $author$project$Domain$Achievement$Utils$kindToString = function (kind) {
 				return '04Farm';
 			case 'Factory':
 				var _v4 = kind.a;
-				return '05Factory';
+				return '06Factory';
 			default:
 				var _v5 = kind.a;
-				return '06Mine';
+				return '05Mine';
 		}
 	}
 };
@@ -7246,7 +7289,6 @@ var $author$project$View$leftPanelView = F2(
 							_List_fromArray(
 								[
 									A2($elm$html$Html$Attributes$style, 'font-size', '16px'),
-									A2($elm$html$Html$Attributes$style, 'color', '#94a3b8'),
 									A2($elm$html$Html$Attributes$style, 'margin-bottom', '12px')
 								]),
 							_List_fromArray(
@@ -7339,7 +7381,7 @@ var $author$project$Domain$Notification$View$maybeViewNotification = function (n
 						]),
 					_List_fromArray(
 						[
-							$elm$html$Html$text('aoeuthsaoeetnohuaoseuhaetnosuheoatnu')
+							$elm$html$Html$text('.')
 						])),
 					A2(
 					$elm$html$Html$div,
@@ -7349,7 +7391,7 @@ var $author$project$Domain$Notification$View$maybeViewNotification = function (n
 						]),
 					_List_fromArray(
 						[
-							$elm$html$Html$text('tanhoenstheonueoahnuosahutensoahntuhaontsuheoatnstehutonasuhentoasuheoants')
+							$elm$html$Html$text('.')
 						]))
 				]));
 	}

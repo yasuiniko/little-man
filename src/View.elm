@@ -72,7 +72,19 @@ headerView : Html Msg
 headerView =
     header [ style "margin-bottom" "24px", style "display" "flex", style "justify-content" "space-between", style "align-items" "center" ]
         [ h1 [ style "margin" "0", style "font-size" "24px" ] [ text "Squeeze Him" ]
-        -- , div [ style "color" "#94a3b8", style "font-size" "14px" ] [ text "Spacebar to click • 10Hz Tick" ]
+        , div [ style "font-size" "14px", style "text-align" "center" ] 
+    [ a [ href "https://github.com/yasuiniko/little-man"
+        , target "_blank"
+        , style "text-decoration" "none"
+        , style "color" "inherit" 
+        , style "display" "inline-flex"
+        , style "flex-direction" "column"
+        , style "align-items" "center"
+        , style "gap" "5px"
+        ] 
+        [ i [ class "fa-brands fa-github", style "font-size" "24px" ] []
+        ]
+    ]
         ]
 
 
@@ -105,7 +117,7 @@ leftPanelView storeModel achievementModel =
         
         -- Achievements Section
         , div [ style "margin-top" "12px", style "text-align" "left" ]
-            [ h3 [ style "font-size" "16px", style "color" "#94a3b8", style "margin-bottom" "12px" ] 
+            [ h3 [ style "font-size" "16px", style "margin-bottom" "12px" ] 
                 [ text "Achievements" ]
             
             -- MAIN CONTAINER: Flows Left-to-Right (Letters)

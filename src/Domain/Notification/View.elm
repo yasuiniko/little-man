@@ -51,6 +51,6 @@ maybeViewNotification notification =
                 , style "pointer-events" "auto"
                 , style "width" "300px"
                 ]
-                [ div [ style "font-size" "12px", style "text-transform" "uppercase", style "opacity" "0.8" ] [ text "aoeuthsaoeetnohuaoseuhaetnosuheoatnu" ]
-                , div [ style "font-size" "16px" ] [ text "tanhoenstheonueoahnuosahutensoahntuhaontsuheoatnstehutonasuhentoasuheoants" ]
+                [ div [ style "font-size" "12px", style "text-transform" "uppercase", style "opacity" "0.8" ] [ text "." ]
+                , div [ style "font-size" "16px" ] [ text "." ]
                 ]
