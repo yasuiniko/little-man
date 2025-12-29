@@ -97,7 +97,7 @@ document.getElementById('unlockAudio').addEventListener('click', async () => {
 
         switch (type) {
         case 'click':
-            playBuffer(soundLibrary.click, now);
+            playBuffer(soundLibrary.click, now, 0.3);
             break;
 
         case 'store':
@@ -112,7 +112,7 @@ document.getElementById('unlockAudio').addEventListener('click', async () => {
 
         case 'clickAch':
             if (soundLibrary.click && soundLibrary.achievement) {
-            const d1 = playBuffer(soundLibrary.click, now);
+            const d1 = playBuffer(soundLibrary.click, now, 0.3);;
             const d2 = playBuffer(soundLibrary.achievement, now + d1);
             blockUntil = now + d1 + d2;
             }
@@ -120,7 +120,7 @@ document.getElementById('unlockAudio').addEventListener('click', async () => {
 
         case 'storeAch':
             if (soundLibrary.store && soundLibrary.achievement) {
-            const d1 = playBuffer(soundLibrary.store, now);
+            const d1 = playBuffer(soundLibrary.store, now);;
             const d2 = playBuffer(soundLibrary.achievement, now + d1);
             blockUntil = now + d1 + d2;
             }
