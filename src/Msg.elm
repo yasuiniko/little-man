@@ -13,4 +13,4 @@ type Msg
     | Hover Achievement
     | Unhover
     | CheckAchievements (Float, List Item)
-    | AddNotification String
+    | AddNotification (String, Float)

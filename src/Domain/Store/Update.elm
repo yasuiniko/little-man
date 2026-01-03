@@ -4,6 +4,7 @@ import Msg exposing (Msg(..))
 import Domain.Store.Model exposing (Model)
 import Domain.Store.Utils exposing (buyItem)
 import Model exposing (config)
+import Domain.Store.Model exposing (ItemId(..))
 
 updateStore : Msg -> Model -> Model
 updateStore msg model = 
@@ -42,6 +43,15 @@ updateStore msg model =
             model
         Unhover ->
             model
+        -- KeyPressed "k" -> 
+        --     { model | poopPerSecond = model.poopPerSecond * 1.5 + 1 }
+        -- KeyPressed "x" -> 
+        --     let
+        --         updatedItems = List.map ( \i -> { i | qty = 65 } ) model.items
+
+        --         updatedModel = { model | items = updatedItems, poop = max (15 * 1.15^ 65 + 1) model.poop }
+        --     in
+        --         updateStore (BuyItem Cursor) updatedModel
         KeyPressed _ -> 
             model
         CheckAchievements _ -> 

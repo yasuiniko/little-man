@@ -6,6 +6,20 @@ import Domain.Store.Utils exposing (calculateCost)
 import Html exposing (Html, button, div, img, span, text)
 import Html.Attributes exposing (class, disabled, src, style)
 import Html.Events exposing (onClick)
+
+formatPps : Float -> String
+formatPps val =
+    if val < 1 then
+        -- Multiplies by 1000, rounds to nearest integer, then divides back
+        -- to simulate 3 decimal places
+        String.fromFloat (toFloat (round (val * 1000)) / 1000)
+    else if val < 10 then
+        -- Multiplies by 100, rounds to nearest integer, then divides back
+        -- to simulate 2 decimal places
+        String.fromFloat (toFloat (round (val * 100)) / 100)
+    else
+        String.fromFloat (toFloat (round val))
+
 viewStoreItem : Float -> Item -> Html Msg
 viewStoreItem poop item =
     let
@@ -33,7 +47,7 @@ viewStoreItem poop item =
                 , div [ style "font-size" "13px", style "color" "#cbd5e1", style "margin-top" "2px" ] 
                     [ text item.description ]
                 , div [ style "font-size" "12px", style "color" "#94a3b8", style "margin-top" "4px" ] 
-                    [ text ("+" ++ String.fromFloat item.poopPerSecond ++ " pps") ]
+                    [ text ("+" ++ formatPps item.curPps ++ " pps") ]
                 ]
             ]
         , div [ style "text-align" "right" ]

@@ -10,6 +10,7 @@ import Domain.Notification.Utils exposing (tickMaybeNotification)
 import Domain.Store.Utils exposing (buyItem)
 import Domain.Store.Update exposing (updateStore)
 import Domain.Store.Model as Store
+import Domain.Achievement.Utils exposing (checkAllDone)
 
 getAchMsg: Store.Model -> Msg
 getAchMsg storeModel = CheckAchievements (storeModel.totalpoop, storeModel.items)
@@ -35,8 +36,12 @@ update msg model =
                 ( newModel, playSound "clickAch")
 
         KeyPressed key ->
-            if key == "k" then
-                update Clickpoop model
+            if key == "k" || key == "x" then
+                let
+                    updatedStoreModel = updateStore (KeyPressed key) model.storeModel 
+                    updatedModel = { model | storeModel = updatedStoreModel }  
+                in
+                ( updatedModel, Cmd.none )
             else
                 ( model, Cmd.none )
 
@@ -53,8 +58,18 @@ update msg model =
                 updatedModel =
                     { model | notification = updatedNotification, storeModel = updatedStoreModel}
                 achMsg = getAchMsg updatedStoreModel
+                
+                allDone = checkAllDone model.achievementModel.achievements model.storeModel.poopPerSecond
+                gameDoneMsg = "Congratulations! You finished the game :). Thanks for playing!"
+
+                finalMsg =
+                    if updatedNotification == Nothing && allDone then
+                        AddNotification ( gameDoneMsg, 3600*24*365 )
+                    else
+                        achMsg
             in
-            update achMsg updatedModel
+            update finalMsg updatedModel
+                    
 
         BuyItem id ->
             let
@@ -97,11 +112,11 @@ update msg model =
                     let
                         message = "Achievement: '" ++ ach.name ++ "'" 
                     in
-                    update (AddNotification message) updatedModel
+                    update (AddNotification (message, 4.0)) updatedModel
                 Nothing ->
                     ( updatedModel, Cmd.none )
-        AddNotification message ->
+        AddNotification ( message, duration ) ->
             let
-                note = Notification message 4.0
+                note = Notification message duration
             in
             ( { model | notification = Just note }, playSound "achievement" )

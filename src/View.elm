@@ -14,7 +14,8 @@ import Domain.Achievement.View exposing (viewAchievement)
 import Domain.Achievement.Utils exposing (groupAchievements)
 import UI.StatBox exposing (statBox)
 import Domain.Store.View exposing (viewStoreItem)
-import Assets exposing (getpoopImage)
+import Assets exposing (getPoopImage)
+import Domain.Store.View exposing (formatPps)
 
 view : Model -> Html Msg
 view model =
@@ -93,7 +94,7 @@ leftPanelView storeModel achievementModel =
     div [ class "panel", style "text-align" "center", style "display" "flex", style "flex-direction" "column", style "gap" "24px" ]
         [
           img
-            [ src (getpoopImage storeModel.poopPerSecond)
+            [ src (getPoopImage storeModel.poopPerSecond)
             , class "poop-btn"
             , style "width" "200px"
             , style "height" "200px"
@@ -112,7 +113,7 @@ leftPanelView storeModel achievementModel =
         -- Statistics
         , div [ style "display" "grid", style "grid-template-columns" "1fr 1fr", style "gap" "12px" ]
             [ statBox "poop" (String.fromInt (floor storeModel.poop))
-            , statBox "Per Second" (String.fromFloat (toFloat (round (storeModel.poopPerSecond * 10)) / 10))
+            , statBox "Per Second" ( formatPps storeModel.poopPerSecond )
             ]
         
         -- Achievements Section

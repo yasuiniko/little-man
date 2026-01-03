@@ -5,7 +5,6 @@ import Domain.Achievement.Model as Achievement
 import Domain.Notification.Model exposing (Notification)
 import Domain.Store.Model as Store
 
-
 type alias Model =
     { storeModel : Store.Model
     , achievementModel : Achievement.Model

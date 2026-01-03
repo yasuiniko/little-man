@@ -65,22 +65,22 @@ initialAchievements =
     , { name = "Baker's Dozen"
       , description = "13 reasons why."
       , unlocked = False
-      , kind = OwnItem Cursor 13
+      , kind = OwnItem Cursor 25
       }
     , { name = "Vlad the Poker"
       , description = "\"We can always add another hole\""
       , unlocked = False
-      , kind = OwnItem Cursor 20
+      , kind = OwnItem Cursor 50
       }
     , { name = "Poking is as poking does"
       , description = "Whatever that means."
       , unlocked = False
-      , kind = OwnItem Cursor 30
+      , kind = OwnItem Cursor 75
       }
     , { name = "Universal Coordinator"
       , description = "Eat, Poop, Die."
       , unlocked = False
-      , kind = OwnItem Cursor 42
+      , kind = OwnItem Cursor 100
       }
 
     , { name = "Rolling pin online"
@@ -101,17 +101,17 @@ initialAchievements =
     , { name = "Tower of Grandmas"
       , description = "3 dimensional squish."
       , unlocked = False
-      , kind = OwnItem Grandma 50
+      , kind = OwnItem Grandma 25
       }
     , { name = "Empire State Grandma"
       , description = "New York don't play."
       , unlocked = False
-      , kind = OwnItem Grandma 381
+      , kind = OwnItem Grandma 50
       }
     , { name = "Dubai Grandma"
-      , description = "It's pistachio on the inside."
+      , description = "Is that pistachio inside?"
       , unlocked = False
-      , kind = OwnItem Grandma 828
+      , kind = OwnItem Grandma 85
       }
 
     , { name = "Farmin' Manure"
@@ -140,41 +140,41 @@ initialAchievements =
       , kind = OwnItem Farm 50
       }
     , { name = "Los Pollos Hermanos"
-      , description = "This operation is too big for one country."
+      , description = "This operation is going international."
       , unlocked = False
-      , kind = OwnItem Farm 100
+      , kind = OwnItem Farm 75
       }
 
 
-    , { name = "The Means of Production"
-      , description = "Straight siezin' it. and by it, lets just say. the prodiction."
+    , { name = "Industrial Revolution"
+      , description = "Plugging in the Spinning Jenny"
       , unlocked = False
       , kind = OwnItem Factory 1
       }
-    , { name = "Willy Wonka"
-      , description = "Everlasting Gobstopper."
+    , { name = "The Means of Production"
+      , description = "Straight siezin' it. and by it, lets just say. the pordoction."
       , unlocked = False
       , kind = OwnItem Factory 5
       }
-    , { name = "Despicable Me"
-      , description = "Direction and Magnitude."
+    , { name = "Burgeoning Empire"
+      , description = "Just the tip"
       , unlocked = False
       , kind = OwnItem Factory 10
       }
-    , { name = "Mr. Burns"
-      , description = "Do it for her."
+    , { name = "The 1%"
+      , description = "Swimming in it"
       , unlocked = False
       , kind = OwnItem Factory 25
       }
-    , { name = "Wayne Enterprises"
-      , description = "Alfred's getting to work."
+    , { name = "Plutocrat"
+      , description = "Don't need to brown-nose anymore"
       , unlocked = False
       , kind = OwnItem Factory 50
       }
     , { name = "Brat Summer"
-      , description = "365 im (bumpin that)"
+      , description = "65 im (bumpin that)"
       , unlocked = False
-      , kind = OwnItem Factory 365
+      , kind = OwnItem Factory 65
       }
       
 
@@ -206,7 +206,7 @@ initialAchievements =
     , { name = "Underwater Cave Exploration"
       , description = "54% fecal microflora."
       , unlocked = False
-      , kind = OwnItem Mine 100
+      , kind = OwnItem Mine 75
       }
     ]
 

@@ -1,9 +1,29 @@
-module Domain.Achievement.Utils exposing (computeNewUnlocks, applyUnlocks, groupAchievements)
+module Domain.Achievement.Utils exposing (computeNewUnlocks, applyUnlocks, groupAchievements, checkAllDone)
 
 import Domain.Store.Model exposing (Item, ItemId)
 import Domain.Achievement.Model exposing (Achievement, AchievementKind(..), Model)
 import Dict exposing (Dict)
 import Domain.Store.Model exposing (ItemId(..))
+import Assets exposing (tiers)
+
+maybeMaxTier : Maybe Float
+maybeMaxTier = tiers
+    |> List.map (\t -> t.min)
+    |> List.maximum
+
+maxTier : Float
+maxTier = 
+    case maybeMaxTier of
+        Just f ->
+            f
+        Nothing ->
+            0
+
+checkAllDone : List Achievement -> Float -> Bool
+checkAllDone achievements pps =
+    achievements
+        |> List.all ( \ach -> ach.unlocked )
+        |> (\b -> b && pps > maxTier) 
 
 hasQty : ItemId -> Int -> List Item -> Bool
 hasQty id amount items =

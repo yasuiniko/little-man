@@ -15,7 +15,8 @@ type alias Item =
     { id : ItemId
     , description : String
     , baseCost : Float
-    , poopPerSecond : Float
+    , basePps : Float
+    , curPps : Float
     , qty : Int
     }
 
@@ -38,11 +39,11 @@ itemMeta id =
 
 initialItems : List Item
 initialItems =
-    [ { id = Cursor, description = "Automatic tiny squeeze.", baseCost = 15, poopPerSecond = 0.15, qty = 0 }
-    , { id = Grandma, description = "A nice tummy squishing grandma.", baseCost = 100, poopPerSecond = 2, qty = 0 }
-    , { id = Farm, description = "Manure to millions.", baseCost = 1100, poopPerSecond = 8, qty = 0 }
-    , { id = Mine, description = "Mine deep chocolate.", baseCost = 12000, poopPerSecond = 47, qty = 0 }
-    , { id = Factory, description = "Mass production.", baseCost = 130000, poopPerSecond = 260, qty = 0 }
+    [ { id = Cursor, description = "Automatic tiny squeeze.", baseCost = 15, basePps = 0.1, curPps = 0.1, qty = 0 }
+    , { id = Grandma, description = "A nice tummy squishing grandma.", baseCost = 200, basePps = 1.0, curPps = 1, qty = 0 }
+    , { id = Farm, description = "Manure to millions.", baseCost = 1100, basePps = 8, curPps = 8, qty = 0 }
+    , { id = Mine, description = "Mine deep chocolate.", baseCost = 12000, basePps = 47, curPps = 47, qty = 0 }
+    , { id = Factory, description = "Mass production.", baseCost = 130000, basePps = 260, curPps = 260, qty = 0 }
     ]
 
 init : () -> Model
