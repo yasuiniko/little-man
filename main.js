@@ -5252,7 +5252,7 @@ var $author$project$Domain$Achievement$Model$initialAchievements = _List_fromArr
 		e: false
 	},
 		{
-		b: 'GDP of France harvested.',
+		b: 'Harvest 1 GDP of France.',
 		c: $author$project$Domain$Achievement$Model$Totalpoop(3162000000),
 		d: 'French Squisher',
 		e: false
