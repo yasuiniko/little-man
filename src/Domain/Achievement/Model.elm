@@ -46,7 +46,7 @@ initialAchievements =
       , kind = Totalpoop 1000000000
       }
     , { name = "French Squisher"
-      , description = "GDP of France harvested."
+      , description = "Harvest 1 GDP of France."
       , unlocked = False
       , kind = Totalpoop 3162000000
       }
