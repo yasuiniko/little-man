@@ -41,9 +41,9 @@ suite =
             \_ ->
                 let
                     item = { id = Grandma, qty = 1, basePps = 0.1, curPps = 0.1, baseCost = 10, description = "Grandma"}
-                    owned = Dict.fromList [ ("Farm", 25.0), ("Grandma", 1) ]
+                    owned = Dict.fromList [ ("Farm", 25), ("Grandma", 1) ]
 
-                    expected = 1.03^owned['Farm']
+                    expected = 1.03^25
                     result = getNeighborBoost (itemMeta item.id).name owned
                 in
                 result |> Expect.within (Expect.Absolute 0.0001) expected

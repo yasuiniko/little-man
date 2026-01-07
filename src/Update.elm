@@ -6,46 +6,46 @@ import Assets exposing (playSound)
 import Storage 
 import Domain.Achievement.Msg as Achievement
 import Domain.Achievement.Update exposing (updateAchievements)
-import Domain.Achievement.Utils exposing (computeNewUnlocks, applyUnlocks)
+import Domain.Achievement.Utils exposing (computeNewUnlocks, applyUnlocks, checkAllDone)
 import Domain.Notification.Model as Notification
 import Domain.Notification.Utils exposing (tickMaybeNotification)
+import Domain.Store.Msg as Store
 import Domain.Store.Update exposing (updateStore)
-import Domain.Achievement.Utils exposing (checkAllDone)
 
 import Codec exposing (Codec, Error)
 
 
-type Context = Sound String | None
+type Context = Sound String | NoContext
 
 update : Msg -> Model -> ( Model, Cmd msg )
 update msg model =
     case msg of
         Clickpoop ->
             model
-                |> updateStoreModel Clickpoop
+                |> updateStoreModel Store.StoreClickPoop
                 |> handleAchievements (Sound "click")
 
         KeyPressed key ->
             if key == "k" || key == "x" then
                 model
-                    |> updateStoreModel (KeyPressed key)
+                    |> updateStoreModel (Store.KeyPressed key)
                     |> withNoCmd
             else
                 ( model, Cmd.none )
 
-        Tick time ->
+        Tick _ ->
             model
-                |> updateStoreModel (Tick time)
+                |> updateStoreModel (Store.StoreTick)
                 |> updateNotification (1.0 / config.hz) 
-                |> handleAchievements None
+                |> handleAchievements NoContext
                 |> step handleGameCompletion
         
         AutoSave ->
             model |> withSaveCmd
 
-        BuyItem id ->
+        StoreMsg m ->
             model 
-                |> updateStoreModel (BuyItem id)
+                |> updateStoreModel m
                 |> handleAchievements (Sound "store")
             
         AchievementMsg achievementMsg -> 
@@ -67,7 +67,7 @@ update msg model =
 
 maybeLast : List a -> Maybe a         
 maybeLast =            
-    List.foldl (Just >> always) Nothing
+    List.reverse >> List.head
 
 decodeModel : Maybe String -> Model
 decodeModel maybeString =
@@ -79,7 +79,7 @@ updateAchievementModel : Achievement.Msg -> Model -> Model
 updateAchievementModel msg model = 
     { model | achievementModel = updateAchievements msg model.achievementModel} 
 
-updateStoreModel : Msg -> Model -> Model
+updateStoreModel : Store.Msg -> Model -> Model
 updateStoreModel msg model = 
     { model | storeModel = updateStore msg model.storeModel} 
 
@@ -114,7 +114,7 @@ handleAchievements context model =
                             "storeAch"
                         _ -> "achievement"
             in
-            addNotification message 4.0 sound updatedModel
+            addNotification message config.notifDuration sound updatedModel
 
         Nothing ->
             case context of 

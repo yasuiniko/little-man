@@ -37,9 +37,10 @@ modelCodec =
         |> Codec.field "modalState" .modalState modalStateCodec
         |> Codec.buildObject
 
-config : { hz : Float, bgGradient : String, cardBg : String, accent : String }
+config : { hz : Float, notifDuration : Float, bgGradient : String, cardBg : String, accent : String }
 config =
     { hz = 10
+    , notifDuration = 4.0
     , bgGradient = "linear-gradient(180deg, #031025 0%, #071028 100%)"
     , cardBg = "#0b1220"
     , accent = "#f59e0b"

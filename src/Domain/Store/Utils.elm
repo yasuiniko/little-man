@@ -15,51 +15,6 @@ calculateCost : Item -> Float
 calculateCost item =
     toFloat (round (item.baseCost * (1.15 ^ toFloat item.qty)))
 
-
-buyItem : ItemId -> Model -> Model
-buyItem id model =
-    let
-        tryBuy item =
-            if item.id == id then
-                let
-                    cost = calculateCost item
-                in
-                if model.poop >= cost then
-                    Just ( { item | qty = item.qty + 1 }, cost )
-
-                else
-                    Nothing
-
-            else
-                Nothing
-
-        found =
-            model.items
-                |> List.filterMap tryBuy
-                |> List.head
-    in
-    case found of
-        Just ( newItem, cost ) ->
-            let
-                itemsWithNewItem =
-                    List.map (\i -> if i.id == id then newItem else i) model.items
-                
-                owned = getOwnedQty itemsWithNewItem
-                newItems = 
-                    List.map (\i -> {i | curPps = getItemPps i owned}) itemsWithNewItem
-                    
-                modelAfterBuy =
-                    { model
-                        | poop = model.poop - cost
-                        , items = newItems
-                        , poopPerSecond = calculatePps newItems
-                    }
-            in
-            modelAfterBuy
-
-        Nothing ->
-            model
-
 -- Helper to get quantities as a Dict for easy lookup
 getOwnedQty : List Item -> Dict String Int
 getOwnedQty items =

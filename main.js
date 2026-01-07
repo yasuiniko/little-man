@@ -1862,8 +1862,8 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 		flagDecoder,
 		args,
 		impl.co,
-		impl.cX,
-		impl.cR,
+		impl.cY,
+		impl.cS,
 		function() { return function() {} }
 	);
 });
@@ -3952,10 +3952,10 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 		flagDecoder,
 		args,
 		impl.co,
-		impl.cX,
-		impl.cR,
+		impl.cY,
+		impl.cS,
 		function(sendToApp, initialModel) {
-			var view = impl.cY;
+			var view = impl.cZ;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3988,11 +3988,11 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 		flagDecoder,
 		args,
 		impl.co,
-		impl.cX,
-		impl.cR,
+		impl.cY,
+		impl.cS,
 		function(sendToApp, initialModel) {
 			var divertHrefToApp = impl.aU && impl.aU(sendToApp)
-			var view = impl.cY;
+			var view = impl.cZ;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -4005,7 +4005,7 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.cV) && (_VirtualDom_doc.title = title = doc.cV);
+				(title !== doc.cW) && (_VirtualDom_doc.title = title = doc.cW);
 			});
 		}
 	);
@@ -4061,8 +4061,8 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.cD;
-	var onUrlRequest = impl.cE;
+	var onUrlChange = impl.cE;
+	var onUrlRequest = impl.cF;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
@@ -4096,9 +4096,9 @@ function _Browser_application(impl)
 		{
 			return A3(impl.co, flags, _Browser_getUrl(), key);
 		},
+		cZ: impl.cZ,
 		cY: impl.cY,
-		cX: impl.cX,
-		cR: impl.cR
+		cS: impl.cS
 	});
 }
 
@@ -5450,11 +5450,11 @@ var $author$project$Domain$Achievement$Model$init = function (_v0) {
 };
 var $author$project$Domain$Store$Item$initialItems = _List_fromArray(
 	[
-		{P: 15, Q: 0.1, S: 0.1, b: 'Automatic tiny squeeze.', cl: 0, cH: 0},
-		{P: 200, Q: 1.0, S: 1, b: 'A nice tummy squishing grandma.', cl: 1, cH: 0},
-		{P: 1100, Q: 8, S: 8, b: 'Manure to millions.', cl: 2, cH: 0},
-		{P: 12000, Q: 47, S: 47, b: 'Mine deep chocolate.', cl: 3, cH: 0},
-		{P: 130000, Q: 260, S: 260, b: 'Mass production.', cl: 4, cH: 0}
+		{P: 15, Q: 0.1, S: 0.1, b: 'Automatic tiny squeeze.', cl: 0, cI: 0},
+		{P: 200, Q: 1.0, S: 1, b: 'A nice tummy squishing grandma.', cl: 1, cI: 0},
+		{P: 1100, Q: 8, S: 8, b: 'Manure to millions.', cl: 2, cI: 0},
+		{P: 12000, Q: 47, S: 47, b: 'Mine deep chocolate.', cl: 3, cI: 0},
+		{P: 130000, Q: 260, S: 260, b: 'Mass production.', cl: 4, cI: 0}
 	]);
 var $author$project$Domain$Store$Model$init = function (_v0) {
 	return {aB: 1, aI: $author$project$Domain$Store$Item$initialItems, aP: 0, aQ: 0, a_: 0};
@@ -5477,10 +5477,10 @@ var $author$project$Msg$LoadedGame = function (a) {
 	return {$: 5, a: a};
 };
 var $author$project$Msg$Tick = function (a) {
-	return {$: 2, a: a};
+	return {$: 1, a: a};
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $author$project$Model$config = {bZ: '#f59e0b', b3: 'linear-gradient(180deg, #031025 0%, #071028 100%)', b7: '#0b1220', ck: 10};
+var $author$project$Model$config = {bZ: '#f59e0b', b3: 'linear-gradient(180deg, #031025 0%, #071028 100%)', b7: '#0b1220', ck: 10, cD: 4.0};
 var $elm$time$Time$Every = F2(
 	function (a, b) {
 		return {$: 0, a: a, b: b};
@@ -5896,7 +5896,7 @@ var $elm$time$Time$every = F2(
 	});
 var $elm$json$Json$Decode$field = _Json_decodeField;
 var $author$project$Msg$KeyPressed = function (a) {
-	return {$: 3, a: a};
+	return {$: 2, a: a};
 };
 var $author$project$Main$keyToMsg = function (key) {
 	return $author$project$Msg$KeyPressed(key);
@@ -6133,15 +6133,16 @@ var $author$project$Main$subscriptions = function (_v0) {
 				$author$project$Storage$loadResponse($author$project$Msg$LoadedGame)
 			]));
 };
-var $author$project$Msg$BuyItem = function (a) {
-	return {$: 1, a: a};
-};
-var $author$project$Msg$Clickpoop = {$: 0};
 var $author$project$Model$ConfirmingReset = 1;
-var $author$project$Update$None = {$: 1};
+var $author$project$Domain$Store$Msg$KeyPressed = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Update$NoContext = {$: 1};
 var $author$project$Update$Sound = function (a) {
 	return {$: 0, a: a};
 };
+var $author$project$Domain$Store$Msg$StoreClickPoop = {$: 0};
+var $author$project$Domain$Store$Msg$StoreTick = {$: 2};
 var $author$project$Storage$clear = _Platform_outgoingPort(
 	'clear',
 	function ($) {
@@ -6631,14 +6632,14 @@ var $author$project$Domain$Store$Model$Model = F5(
 	});
 var $author$project$Domain$Store$Item$Item = F6(
 	function (id, description, baseCost, basePps, curPps, qty) {
-		return {P: baseCost, Q: basePps, S: curPps, b: description, cl: id, cH: qty};
+		return {P: baseCost, Q: basePps, S: curPps, b: description, cl: id, cI: qty};
 	});
 var $author$project$Domain$Store$Item$itemCodec = $miniBill$elm_codec$Codec$buildObject(
 	A4(
 		$miniBill$elm_codec$Codec$field,
 		'qty',
 		function ($) {
-			return $.cH;
+			return $.cI;
 		},
 		$miniBill$elm_codec$Codec$int,
 		A4(
@@ -6854,7 +6855,7 @@ var $author$project$Domain$Achievement$Utils$hasQty = F3(
 			A2(
 				$elm$core$Maybe$map,
 				function (i) {
-					return _Utils_cmp(i.cH, amount) > -1;
+					return _Utils_cmp(i.cI, amount) > -1;
 				},
 				$elm$core$List$head(
 					A2(
@@ -6884,14 +6885,7 @@ var $author$project$Domain$Achievement$Utils$computeNewUnlocks = F3(
 		var achIsUnlocked = A2($author$project$Domain$Achievement$Utils$isUnlocked, totalpoop, items);
 		return A2($elm$core$List$filter, achIsUnlocked, achievements);
 	});
-var $elm$core$Basics$always = F2(
-	function (a, _v0) {
-		return a;
-	});
-var $author$project$Update$maybeLast = A2(
-	$elm$core$List$foldl,
-	A2($elm$core$Basics$composeR, $elm$core$Maybe$Just, $elm$core$Basics$always),
-	$elm$core$Maybe$Nothing);
+var $author$project$Update$maybeLast = A2($elm$core$Basics$composeR, $elm$core$List$reverse, $elm$core$List$head);
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Update$withNoCmd = function (model) {
@@ -6927,7 +6921,7 @@ var $author$project$Update$handleAchievements = F2(
 				return 'achievement';
 			}();
 			var message = 'Achievement: \'' + (achievement.d + '\'');
-			return A4($author$project$Update$addNotification, message, 4.0, sound, updatedModel);
+			return A4($author$project$Update$addNotification, message, $author$project$Model$config.cD, sound, updatedModel);
 		} else {
 			if (!context.$) {
 				var sound = context.a;
@@ -7060,7 +7054,7 @@ var $elm$core$Basics$pow = _Basics_pow;
 var $elm$core$Basics$round = _Basics_round;
 var $author$project$Domain$Store$Utils$calculateCost = function (item) {
 	return $elm$core$Basics$round(
-		item.P * A2($elm$core$Basics$pow, 1.15, item.cH));
+		item.P * A2($elm$core$Basics$pow, 1.15, item.cI));
 };
 var $elm$core$List$sum = function (numbers) {
 	return A3($elm$core$List$foldl, $elm$core$Basics$add, 0, numbers);
@@ -7070,7 +7064,7 @@ var $author$project$Domain$Store$Utils$calculatePps = function (items) {
 		A2(
 			$elm$core$List$map,
 			function (i) {
-				return i.S * i.cH;
+				return i.S * i.cI;
 			},
 			items));
 };
@@ -7163,9 +7157,9 @@ var $author$project$Domain$Store$Item$itemMeta = function (id) {
 };
 var $author$project$Domain$Store$Utils$getItemPps = F2(
 	function (item, owned) {
-		var qty = A2($elm$core$Basics$max, item.cH - 1, 0);
+		var qty = A2($elm$core$Basics$max, item.cI - 1, 0);
 		var name = $author$project$Domain$Store$Item$itemMeta(item.cl).d;
-		var selfMultiplier = (name === 'Grandma') ? ((item.cH >= 50) ? A2($elm$core$Basics$pow, 1.05, qty) : ((item.cH >= 25) ? A2($elm$core$Basics$pow, 1.04, qty) : ((item.cH >= 10) ? A2($elm$core$Basics$pow, 1.03, qty) : A2($elm$core$Basics$pow, 1.02, qty)))) : A2($elm$core$Basics$pow, 1.02, qty);
+		var selfMultiplier = (name === 'Grandma') ? ((item.cI >= 50) ? A2($elm$core$Basics$pow, 1.05, qty) : ((item.cI >= 25) ? A2($elm$core$Basics$pow, 1.04, qty) : ((item.cI >= 10) ? A2($elm$core$Basics$pow, 1.03, qty) : A2($elm$core$Basics$pow, 1.02, qty)))) : A2($elm$core$Basics$pow, 1.02, qty);
 		var grandmaQty = A2(
 			$elm$core$Maybe$withDefault,
 			0,
@@ -7181,92 +7175,68 @@ var $author$project$Domain$Store$Utils$getOwnedQty = function (items) {
 			function (i) {
 				return _Utils_Tuple2(
 					$author$project$Domain$Store$Item$itemMeta(i.cl).d,
-					i.cH);
+					i.cI);
 			},
 			items));
 };
-var $author$project$Domain$Store$Utils$buyItem = F2(
-	function (id, model) {
-		var tryBuy = function (item) {
-			if (_Utils_eq(item.cl, id)) {
-				var cost = $author$project$Domain$Store$Utils$calculateCost(item);
-				return (_Utils_cmp(model.aP, cost) > -1) ? $elm$core$Maybe$Just(
-					_Utils_Tuple2(
-						_Utils_update(
-							item,
-							{cH: item.cH + 1}),
-						cost)) : $elm$core$Maybe$Nothing;
-			} else {
-				return $elm$core$Maybe$Nothing;
-			}
-		};
-		var found = $elm$core$List$head(
-			A2($elm$core$List$filterMap, tryBuy, model.aI));
-		if (!found.$) {
-			var _v1 = found.a;
-			var newItem = _v1.a;
-			var cost = _v1.b;
-			var itemsWithNewItem = A2(
-				$elm$core$List$map,
-				function (i) {
-					return _Utils_eq(i.cl, id) ? newItem : i;
-				},
-				model.aI);
-			var owned = $author$project$Domain$Store$Utils$getOwnedQty(itemsWithNewItem);
-			var newItems = A2(
-				$elm$core$List$map,
-				function (i) {
-					return _Utils_update(
-						i,
-						{
-							S: A2($author$project$Domain$Store$Utils$getItemPps, i, owned)
-						});
-				},
-				itemsWithNewItem);
-			var modelAfterBuy = _Utils_update(
-				model,
-				{
-					aI: newItems,
-					aP: model.aP - cost,
-					aQ: $author$project$Domain$Store$Utils$calculatePps(newItems)
-				});
-			return modelAfterBuy;
-		} else {
-			return model;
-		}
-	});
 var $author$project$Domain$Store$Update$updateStore = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 0:
-				var newpoop = model.aP + model.aB;
-				var newTotal = model.a_ + model.aB;
-				var updatedModel = _Utils_update(
+				return _Utils_update(
 					model,
-					{aP: newpoop, a_: newTotal});
-				return updatedModel;
+					{aP: model.aP + model.aB, a_: model.a_ + model.aB});
 			case 2:
 				var poopPerTick = model.aQ / $author$project$Model$config.ck;
-				var modelWithResources = _Utils_update(
+				return _Utils_update(
 					model,
 					{aP: model.aP + poopPerTick, a_: model.a_ + poopPerTick});
-				return modelWithResources;
 			case 1:
 				var id = msg.a;
-				var updatedModel = A2($author$project$Domain$Store$Utils$buyItem, id, model);
-				return updatedModel;
-			case 4:
-				return model;
-			case 6:
-				return model;
-			case 3:
-				return model;
-			case 5:
-				return model;
-			case 7:
-				return model;
-			case 8:
-				return model;
+				var cost = A2(
+					$elm$core$Maybe$withDefault,
+					0,
+					A2(
+						$elm$core$Maybe$map,
+						$author$project$Domain$Store$Utils$calculateCost,
+						$elm$core$List$head(
+							A2(
+								$elm$core$List$filter,
+								function (i) {
+									return _Utils_eq(i.cl, id);
+								},
+								model.aI))));
+				var canAfford = _Utils_cmp(model.aP, cost) > -1;
+				if (!canAfford) {
+					return model;
+				} else {
+					var itemsWithNewQty = A2(
+						$elm$core$List$map,
+						function (i) {
+							return _Utils_eq(i.cl, id) ? _Utils_update(
+								i,
+								{cI: i.cI + 1}) : i;
+						},
+						model.aI);
+					var owned = $author$project$Domain$Store$Utils$getOwnedQty(itemsWithNewQty);
+					var finalItems = A2(
+						$elm$core$List$map,
+						function (i) {
+							return _Utils_update(
+								i,
+								{
+									S: A2($author$project$Domain$Store$Utils$getItemPps, i, owned)
+								});
+						},
+						itemsWithNewQty);
+					return _Utils_update(
+						model,
+						{
+							aI: finalItems,
+							aP: model.aP - cost,
+							aQ: $author$project$Domain$Store$Utils$calculatePps(finalItems)
+						});
+				}
 			default:
 				return model;
 		}
@@ -7304,40 +7274,33 @@ var $author$project$Update$update = F2(
 				return A2(
 					$author$project$Update$handleAchievements,
 					$author$project$Update$Sound('click'),
-					A2($author$project$Update$updateStoreModel, $author$project$Msg$Clickpoop, model));
-			case 3:
+					A2($author$project$Update$updateStoreModel, $author$project$Domain$Store$Msg$StoreClickPoop, model));
+			case 2:
 				var key = msg.a;
 				return ((key === 'k') || (key === 'x')) ? $author$project$Update$withNoCmd(
 					A2(
 						$author$project$Update$updateStoreModel,
-						$author$project$Msg$KeyPressed(key),
+						$author$project$Domain$Store$Msg$KeyPressed(key),
 						model)) : _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-			case 2:
-				var time = msg.a;
+			case 1:
 				return A2(
 					$author$project$Update$step,
 					$author$project$Update$handleGameCompletion,
 					A2(
 						$author$project$Update$handleAchievements,
-						$author$project$Update$None,
+						$author$project$Update$NoContext,
 						A2(
 							$author$project$Update$updateNotification,
 							1.0 / $author$project$Model$config.ck,
-							A2(
-								$author$project$Update$updateStoreModel,
-								$author$project$Msg$Tick(time),
-								model))));
+							A2($author$project$Update$updateStoreModel, $author$project$Domain$Store$Msg$StoreTick, model))));
 			case 6:
 				return $author$project$Update$withSaveCmd(model);
-			case 1:
-				var id = msg.a;
+			case 3:
+				var m = msg.a;
 				return A2(
 					$author$project$Update$handleAchievements,
 					$author$project$Update$Sound('store'),
-					A2(
-						$author$project$Update$updateStoreModel,
-						$author$project$Msg$BuyItem(id),
-						model));
+					A2($author$project$Update$updateStoreModel, m, model));
 			case 4:
 				var achievementMsg = msg.a;
 				return $author$project$Update$withNoCmd(
@@ -7488,6 +7451,7 @@ var $author$project$View$headerView = A2(
 						]))
 				]))
 		]));
+var $author$project$Msg$Clickpoop = {$: 0};
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$html$Html$Attributes$draggable = _VirtualDom_attribute('draggable');
 var $elm$core$String$fromFloat = _String_fromNumber;
@@ -8302,6 +8266,12 @@ var $author$project$Domain$Notification$View$maybeViewNotification = function (n
 				]));
 	}
 };
+var $author$project$Domain$Store$Msg$BuyItem = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Msg$StoreMsg = function (a) {
+	return {$: 3, a: a};
+};
 var $elm$html$Html$Attributes$boolProperty = F2(
 	function (key, bool) {
 		return A2(
@@ -8379,7 +8349,7 @@ var $author$project$Domain$Store$View$viewStoreItem = F2(
 											_List_fromArray(
 												[
 													$elm$html$Html$text(
-													'x' + $elm$core$String$fromInt(item.cH))
+													'x' + $elm$core$String$fromInt(item.cI))
 												]))
 										])),
 									A2(
@@ -8439,7 +8409,8 @@ var $author$project$Domain$Store$View$viewStoreItem = F2(
 								[
 									$elm$html$Html$Attributes$class('btn-buy'),
 									$elm$html$Html$Events$onClick(
-									$author$project$Msg$BuyItem(item.cl)),
+									$author$project$Msg$StoreMsg(
+										$author$project$Domain$Store$Msg$BuyItem(item.cl))),
 									$elm$html$Html$Attributes$disabled(!canAfford)
 								]),
 							_List_fromArray(
@@ -8542,7 +8513,7 @@ var $author$project$View$viewModal = function (model) {
 							_List_Nil,
 							_List_fromArray(
 								[
-									$elm$html$Html$text('This will delete all your progress. Are you sure?')
+									$elm$html$Html$text('This will delete all your progress!')
 								])),
 							A2(
 							$elm$html$Html$div,
@@ -8630,6 +8601,6 @@ var $author$project$View$view = function (model) {
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{co: $author$project$Main$init, cR: $author$project$Main$subscriptions, cX: $author$project$Update$update, cY: $author$project$View$view});
+	{co: $author$project$Main$init, cS: $author$project$Main$subscriptions, cY: $author$project$Update$update, cZ: $author$project$View$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

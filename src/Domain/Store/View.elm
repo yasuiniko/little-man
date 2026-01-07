@@ -1,6 +1,7 @@
 module Domain.Store.View exposing (..)
 
-import Msg exposing (Msg(..))
+import Msg as MainMsg
+import Domain.Store.Msg exposing (Msg(..))
 import Domain.Store.Item exposing (Item, itemMeta)
 import Domain.Store.Utils exposing (calculateCost)
 import Html exposing (Html, button, div, img, span, text)
@@ -20,7 +21,7 @@ formatPps val =
     else
         String.fromFloat (toFloat (round val))
 
-viewStoreItem : Float -> Item -> Html Msg
+viewStoreItem : Float -> Item -> Html MainMsg.Msg
 viewStoreItem poop item =
     let
         cost = calculateCost item
@@ -55,7 +56,7 @@ viewStoreItem poop item =
                 [ text (String.fromFloat cost) ]
             , button
                 [ class "btn-buy"
-                , onClick (BuyItem item.id)
+                , onClick (MainMsg.StoreMsg (BuyItem item.id))
                 , disabled (not canAfford)
                 ]
                 [ text "Buy" ]
