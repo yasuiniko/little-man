@@ -132,7 +132,7 @@ viewModal model =
                     , style "border" "1px solid #334155"
                     ]
                     [ h3 [ style "margin-top" "0" ] [ text "Wipe Save?" ]
-                    , p [] [ text "This will delete all your progress. Are you sure?" ]
+                    , p [] [ text "This will delete all your progress!" ]
                     , div [ style "display" "flex", style "gap" "12px", style "justify-content" "center", style "margin-top" "20px" ]
                         [ button 
                             [ onClick CancelReset
