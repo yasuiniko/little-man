@@ -1,7 +1,8 @@
 module Domain.Store.Utils exposing (..)
 
 import Dict exposing (Dict)
-import Domain.Store.Model exposing (Item, Model, ItemId, itemMeta)
+import Domain.Store.Model exposing (Model)
+import Domain.Store.Item exposing (Item, ItemId, itemMeta)
 import Msg exposing (Msg(..))
 
 calculatePps : List Item -> Float
@@ -86,7 +87,9 @@ getNeighborBoost name owned =
 getCursorFactoryBonus : String -> Dict String Int -> Float
 getCursorFactoryBonus name owned = 
     let
-        factoryQty = Maybe.withDefault 0 (Dict.get "Factory" owned)
+        factoryQty = owned
+            |> Dict.get "Factory"
+            |> Maybe.withDefault 0
     in
     
         if name == "Cursor" && factoryQty > 0 then

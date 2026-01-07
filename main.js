@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.aB.ag === region.aR.ag)
+	if (region.aV.ai === region.ba.ai)
 	{
-		return 'on line ' + region.aB.ag;
+		return 'on line ' + region.aV.ai;
 	}
-	return 'on lines ' + region.aB.ag + ' through ' + region.aR.ag;
+	return 'on lines ' + region.aV.ai + ' through ' + region.ba.ai;
 }
 
 
@@ -1861,9 +1861,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.b1,
-		impl.cw,
-		impl.cr,
+		impl.co,
+		impl.cX,
+		impl.cR,
 		function() { return function() {} }
 	);
 });
@@ -2727,9 +2727,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		b6: func(record.b6),
-		aC: record.aC,
-		az: record.az
+		bp: func(record.bp),
+		aW: record.aW,
+		aR: record.aR
 	}
 });
 
@@ -2997,11 +2997,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.b6;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.aC;
+		var message = !tag ? value : tag < 3 ? value.a : value.bp;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.aW;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.az) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.aR) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3951,11 +3951,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.b1,
-		impl.cw,
-		impl.cr,
+		impl.co,
+		impl.cX,
+		impl.cR,
 		function(sendToApp, initialModel) {
-			var view = impl.cx;
+			var view = impl.cY;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3987,12 +3987,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.b1,
-		impl.cw,
-		impl.cr,
+		impl.co,
+		impl.cX,
+		impl.cR,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.aA && impl.aA(sendToApp)
-			var view = impl.cx;
+			var divertHrefToApp = impl.aU && impl.aU(sendToApp)
+			var view = impl.cY;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -4000,12 +4000,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.bJ);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.b4);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.cu) && (_VirtualDom_doc.title = title = doc.cu);
+				(title !== doc.cV) && (_VirtualDom_doc.title = title = doc.cV);
 			});
 		}
 	);
@@ -4061,12 +4061,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.ch;
-	var onUrlRequest = impl.ci;
+	var onUrlChange = impl.cD;
+	var onUrlRequest = impl.cE;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		aA: function(sendToApp)
+		aU: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4082,9 +4082,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
+							&& curr.bB === next.bB
 							&& curr.bi === next.bi
-							&& curr.aY === next.aY
-							&& curr.bf.a === next.bf.a
+							&& curr.by.a === next.by.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4092,13 +4092,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		b1: function(flags)
+		co: function(flags)
 		{
-			return A3(impl.b1, flags, _Browser_getUrl(), key);
+			return A3(impl.co, flags, _Browser_getUrl(), key);
 		},
-		cx: impl.cx,
-		cw: impl.cw,
-		cr: impl.cr
+		cY: impl.cY,
+		cX: impl.cX,
+		cR: impl.cR
 	});
 }
 
@@ -4164,17 +4164,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { bY: 'hidden', bN: 'visibilitychange' }
+		? { cj: 'hidden', b8: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { bY: 'mozHidden', bN: 'mozvisibilitychange' }
+		? { cj: 'mozHidden', b8: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { bY: 'msHidden', bN: 'msvisibilitychange' }
+		? { cj: 'msHidden', b8: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { bY: 'webkitHidden', bN: 'webkitvisibilitychange' }
-		: { bY: 'hidden', bN: 'visibilitychange' };
+		? { cj: 'webkitHidden', b8: 'webkitvisibilitychange' }
+		: { cj: 'hidden', b8: 'visibilitychange' };
 }
 
 
@@ -4255,12 +4255,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		bn: _Browser_getScene(),
-		bx: {
-			bA: _Browser_window.pageXOffset,
-			bB: _Browser_window.pageYOffset,
-			bz: _Browser_doc.documentElement.clientWidth,
-			aX: _Browser_doc.documentElement.clientHeight
+		bI: _Browser_getScene(),
+		bT: {
+			bW: _Browser_window.pageXOffset,
+			bX: _Browser_window.pageYOffset,
+			bV: _Browser_doc.documentElement.clientWidth,
+			bh: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4270,8 +4270,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		bz: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		aX: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		bV: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		bh: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4294,15 +4294,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			bn: {
-				bz: node.scrollWidth,
-				aX: node.scrollHeight
+			bI: {
+				bV: node.scrollWidth,
+				bh: node.scrollHeight
 			},
-			bx: {
-				bA: node.scrollLeft,
-				bB: node.scrollTop,
-				bz: node.clientWidth,
-				aX: node.clientHeight
+			bT: {
+				bW: node.scrollLeft,
+				bX: node.scrollTop,
+				bV: node.clientWidth,
+				bh: node.clientHeight
 			}
 		};
 	});
@@ -4332,18 +4332,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			bn: _Browser_getScene(),
-			bx: {
-				bA: x,
-				bB: y,
-				bz: _Browser_doc.documentElement.clientWidth,
-				aX: _Browser_doc.documentElement.clientHeight
+			bI: _Browser_getScene(),
+			bT: {
+				bW: x,
+				bX: y,
+				bV: _Browser_doc.documentElement.clientWidth,
+				bh: _Browser_doc.documentElement.clientHeight
 			},
-			bS: {
-				bA: x + rect.left,
-				bB: y + rect.top,
-				bz: rect.width,
-				aX: rect.height
+			cd: {
+				bW: x + rect.left,
+				bX: y + rect.top,
+				bV: rect.width,
+				bh: rect.height
 			}
 		};
 	});
@@ -4830,25 +4830,25 @@ var $elm$core$Array$treeFromBuilder = F2(
 	});
 var $elm$core$Array$builderToArray = F2(
 	function (reverseNodeList, builder) {
-		if (!builder.j) {
+		if (!builder.k) {
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.p),
+				$elm$core$Elm$JsArray$length(builder.q),
 				$elm$core$Array$shiftStep,
 				$elm$core$Elm$JsArray$empty,
-				builder.p);
+				builder.q);
 		} else {
-			var treeLen = builder.j * $elm$core$Array$branchFactor;
+			var treeLen = builder.k * $elm$core$Array$branchFactor;
 			var depth = $elm$core$Basics$floor(
 				A2($elm$core$Basics$logBase, $elm$core$Array$branchFactor, treeLen - 1));
-			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.q) : builder.q;
-			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.j);
+			var correctNodeList = reverseNodeList ? $elm$core$List$reverse(builder.r) : builder.r;
+			var tree = A2($elm$core$Array$treeFromBuilder, correctNodeList, builder.k);
 			return A4(
 				$elm$core$Array$Array_elm_builtin,
-				$elm$core$Elm$JsArray$length(builder.p) + treeLen,
+				$elm$core$Elm$JsArray$length(builder.q) + treeLen,
 				A2($elm$core$Basics$max, 5, depth * $elm$core$Array$shiftStep),
 				tree,
-				builder.p);
+				builder.q);
 		}
 	});
 var $elm$core$Basics$idiv = _Basics_idiv;
@@ -4861,7 +4861,7 @@ var $elm$core$Array$initializeHelp = F5(
 				return A2(
 					$elm$core$Array$builderToArray,
 					false,
-					{q: nodeList, j: (len / $elm$core$Array$branchFactor) | 0, p: tail});
+					{r: nodeList, k: (len / $elm$core$Array$branchFactor) | 0, q: tail});
 			} else {
 				var leaf = $elm$core$Array$Leaf(
 					A3($elm$core$Elm$JsArray$initialize, $elm$core$Array$branchFactor, fromIndex, fn));
@@ -4928,7 +4928,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {aT: fragment, aY: host, bb: path, bf: port_, bi: protocol, bj: query};
+		return {bc: fragment, bi: host, bw: path, by: port_, bB: protocol, bC: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5207,53 +5207,60 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
-var $author$project$Domain$Store$Model$Cursor = 0;
-var $author$project$Domain$Store$Model$Factory = 3;
-var $author$project$Domain$Store$Model$Farm = 2;
-var $author$project$Domain$Store$Model$Grandma = 1;
-var $author$project$Domain$Store$Model$Mine = 4;
+var $elm$json$Json$Encode$null = _Json_encodeNull;
+var $author$project$Storage$loadRequest = _Platform_outgoingPort(
+	'loadRequest',
+	function ($) {
+		return $elm$json$Json$Encode$null;
+	});
+var $author$project$Model$NoModal = 0;
+var $author$project$Domain$Store$Item$Cursor = 0;
+var $author$project$Domain$Store$Item$Factory = 4;
+var $author$project$Domain$Store$Item$Farm = 2;
+var $author$project$Domain$Store$Item$Grandma = 1;
+var $author$project$Domain$Store$Item$Mine = 3;
 var $author$project$Domain$Achievement$Model$OwnItem = F2(
 	function (a, b) {
 		return {$: 1, a: a, b: b};
 	});
-var $author$project$Domain$Achievement$Model$Totalpoop = function (a) {
+var $author$project$Domain$Achievement$Model$TotalPoop = function (a) {
 	return {$: 0, a: a};
 };
 var $author$project$Domain$Achievement$Model$initialAchievements = _List_fromArray(
 	[
 		{
 		b: 'Squeeze him once',
-		c: $author$project$Domain$Achievement$Model$Totalpoop(1),
+		c: $author$project$Domain$Achievement$Model$TotalPoop(1),
 		d: 'Up and at \'em',
 		e: false
 	},
 		{
 		b: 'Harvest 100 lifetime poop.',
-		c: $author$project$Domain$Achievement$Model$Totalpoop(100),
+		c: $author$project$Domain$Achievement$Model$TotalPoop(100),
 		d: 'Novice Squisher',
 		e: false
 	},
 		{
 		b: 'Harvest 1,000 lifetime poop.',
-		c: $author$project$Domain$Achievement$Model$Totalpoop(1000),
+		c: $author$project$Domain$Achievement$Model$TotalPoop(1000),
 		d: 'Pro Squisher',
 		e: false
 	},
 		{
 		b: 'Harvest 1 million lifetime poop.',
-		c: $author$project$Domain$Achievement$Model$Totalpoop(1000000),
+		c: $author$project$Domain$Achievement$Model$TotalPoop(1000000),
 		d: 'Elite Squisher',
 		e: false
 	},
 		{
 		b: 'Harvest 1 billion lifetime poop.',
-		c: $author$project$Domain$Achievement$Model$Totalpoop(1000000000),
+		c: $author$project$Domain$Achievement$Model$TotalPoop(1000000000),
 		d: 'Ultra Squisher',
 		e: false
 	},
 		{
 		b: 'Harvest 1 GDP of France.',
-		c: $author$project$Domain$Achievement$Model$Totalpoop(3162000000),
+		c: $author$project$Domain$Achievement$Model$TotalPoop(3162000000),
 		d: 'French Squisher',
 		e: false
 	},
@@ -5276,7 +5283,7 @@ var $author$project$Domain$Achievement$Model$initialAchievements = _List_fromArr
 		e: false
 	},
 		{
-		b: '\"We can always add another hole\"',
+		b: '\"We can always add another hole.\"',
 		c: A2($author$project$Domain$Achievement$Model$OwnItem, 0, 50),
 		d: 'Vlad the Poker',
 		e: false
@@ -5330,7 +5337,7 @@ var $author$project$Domain$Achievement$Model$initialAchievements = _List_fromArr
 		e: false
 	},
 		{
-		b: 'Own 1 Farm',
+		b: 'Own 1 Farm.',
 		c: A2($author$project$Domain$Achievement$Model$OwnItem, 2, 1),
 		d: 'Farmin\' Manure',
 		e: false
@@ -5366,118 +5373,121 @@ var $author$project$Domain$Achievement$Model$initialAchievements = _List_fromArr
 		e: false
 	},
 		{
-		b: 'Plugging in the Spinning Jenny',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 1),
-		d: 'Industrial Revolution',
-		e: false
-	},
-		{
-		b: 'Straight siezin\' it. and by it, lets just say. the pordoction.',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 5),
-		d: 'The Means of Production',
-		e: false
-	},
-		{
-		b: 'Just the tip',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 10),
-		d: 'Burgeoning Empire',
-		e: false
-	},
-		{
-		b: 'Swimming in it',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 25),
-		d: 'The 1%',
-		e: false
-	},
-		{
-		b: 'Don\'t need to brown-nose anymore',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 50),
-		d: 'Plutocrat',
-		e: false
-	},
-		{
-		b: '65 im (bumpin that)',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 65),
-		d: 'Brat Summer',
-		e: false
-	},
-		{
 		b: 'It\'s not very well ventilated down there.',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 1),
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 1),
 		d: 'I Think I\'m Getting the Black Lung, Pop',
 		e: false
 	},
 		{
 		b: 'Just scratchin\' the surface.',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 5),
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 5),
 		d: 'Open Pit Mining',
 		e: false
 	},
 		{
 		b: 'Vertical access.',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 10),
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 10),
 		d: 'Shaft Mining',
 		e: false
 	},
 		{
 		b: 'Manual excavation.',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 25),
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 25),
 		d: 'Hard Rock Mining',
 		e: false
 	},
 		{
 		b: 'Hydrocarbon exploitation.',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 50),
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 50),
 		d: 'Hydraulic Fracking',
 		e: false
 	},
 		{
 		b: '54% fecal microflora.',
-		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 75),
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 3, 75),
 		d: 'Underwater Cave Exploration',
+		e: false
+	},
+		{
+		b: 'Mass production.',
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 1),
+		d: 'Industrial Revolution',
+		e: false
+	},
+		{
+		b: 'Straight siezin\' it. and by it, lets just say. the pordoction.',
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 5),
+		d: 'The Means of Production',
+		e: false
+	},
+		{
+		b: 'Just the tip.',
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 10),
+		d: 'Burgeoning Empire',
+		e: false
+	},
+		{
+		b: 'Swimming in it.',
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 25),
+		d: 'The 1%',
+		e: false
+	},
+		{
+		b: 'Don\'t need to brown-nose anymore.',
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 50),
+		d: 'Plutocrat',
+		e: false
+	},
+		{
+		b: '65 im (bumpin that).',
+		c: A2($author$project$Domain$Achievement$Model$OwnItem, 4, 65),
+		d: 'Brat Summer',
 		e: false
 	}
 	]);
 var $author$project$Domain$Achievement$Model$init = function (_v0) {
-	return {aG: $author$project$Domain$Achievement$Model$initialAchievements, aZ: $elm$core$Maybe$Nothing};
+	return {ay: $author$project$Domain$Achievement$Model$initialAchievements, aG: $elm$core$Maybe$Nothing};
 };
-var $author$project$Domain$Store$Model$initialItems = _List_fromArray(
+var $author$project$Domain$Store$Item$initialItems = _List_fromArray(
 	[
-		{V: 15, W: 0.1, X: 0.1, b: 'Automatic tiny squeeze.', b_: 0, cl: 0},
-		{V: 200, W: 1.0, X: 1, b: 'A nice tummy squishing grandma.', b_: 1, cl: 0},
-		{V: 1100, W: 8, X: 8, b: 'Manure to millions.', b_: 2, cl: 0},
-		{V: 12000, W: 47, X: 47, b: 'Mine deep chocolate.', b_: 4, cl: 0},
-		{V: 130000, W: 260, X: 260, b: 'Mass production.', b_: 3, cl: 0}
+		{P: 15, Q: 0.1, S: 0.1, b: 'Automatic tiny squeeze.', cl: 0, cH: 0},
+		{P: 200, Q: 1.0, S: 1, b: 'A nice tummy squishing grandma.', cl: 1, cH: 0},
+		{P: 1100, Q: 8, S: 8, b: 'Manure to millions.', cl: 2, cH: 0},
+		{P: 12000, Q: 47, S: 47, b: 'Mine deep chocolate.', cl: 3, cH: 0},
+		{P: 130000, Q: 260, S: 260, b: 'Mass production.', cl: 4, cH: 0}
 	]);
 var $author$project$Domain$Store$Model$init = function (_v0) {
-	return {aM: 1, a0: $author$project$Domain$Store$Model$initialItems, bd: 0, be: 0, bw: 0};
+	return {aB: 1, aI: $author$project$Domain$Store$Item$initialItems, aP: 0, aQ: 0, a_: 0};
 };
-var $author$project$Model$init = function (_v0) {
+var $author$project$Model$modelInit = function (_v0) {
 	return {
-		aF: $author$project$Domain$Achievement$Model$init(0),
-		a9: $elm$core$Maybe$Nothing,
-		bq: $author$project$Domain$Store$Model$init(0)
+		ax: $author$project$Domain$Achievement$Model$init(0),
+		aL: 0,
+		aN: $elm$core$Maybe$Nothing,
+		aX: $author$project$Domain$Store$Model$init(0)
 	};
 };
-var $elm$core$Platform$Cmd$batch = _Platform_batch;
-var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		$author$project$Model$init(0),
-		$elm$core$Platform$Cmd$none);
+		$author$project$Model$modelInit(0),
+		$author$project$Storage$loadRequest(0));
+};
+var $author$project$Msg$AutoSave = {$: 7};
+var $author$project$Msg$LoadedGame = function (a) {
+	return {$: 6, a: a};
 };
 var $author$project$Msg$Tick = function (a) {
 	return {$: 2, a: a};
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
-var $author$project$Model$config = {bD: '#f59e0b', bI: 'linear-gradient(180deg, #031025 0%, #071028 100%)', bM: '#0b1220', bZ: 10};
+var $author$project$Model$config = {bZ: '#f59e0b', b3: 'linear-gradient(180deg, #031025 0%, #071028 100%)', b7: '#0b1220', ck: 10};
 var $elm$time$Time$Every = F2(
 	function (a, b) {
 		return {$: 0, a: a, b: b};
 	});
 var $elm$time$Time$State = F2(
 	function (taggers, processes) {
-		return {bh: processes, bu: taggers};
+		return {bA: processes, bQ: taggers};
 	});
 var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
 var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
@@ -5769,7 +5779,7 @@ var $elm$time$Time$spawnHelp = F3(
 	});
 var $elm$time$Time$onEffects = F3(
 	function (router, subs, _v0) {
-		var processes = _v0.bh;
+		var processes = _v0.bA;
 		var rightStep = F3(
 			function (_v6, id, _v7) {
 				var spawns = _v7.a;
@@ -5838,7 +5848,7 @@ var $elm$time$Time$millisToPosix = $elm$core$Basics$identity;
 var $elm$time$Time$now = _Time_now($elm$time$Time$millisToPosix);
 var $elm$time$Time$onSelfMsg = F3(
 	function (router, interval, state) {
-		var _v0 = A2($elm$core$Dict$get, interval, state.bu);
+		var _v0 = A2($elm$core$Dict$get, interval, state.bQ);
 		if (_v0.$ === 1) {
 			return $elm$core$Task$succeed(state);
 		} else {
@@ -5891,6 +5901,17 @@ var $author$project$Msg$KeyPressed = function (a) {
 var $author$project$Main$keyToMsg = function (key) {
 	return $author$project$Msg$KeyPressed(key);
 };
+var $elm$json$Json$Decode$null = _Json_decodeNull;
+var $elm$json$Json$Decode$oneOf = _Json_oneOf;
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $author$project$Storage$loadResponse = _Platform_incomingPort(
+	'loadResponse',
+	$elm$json$Json$Decode$oneOf(
+		_List_fromArray(
+			[
+				$elm$json$Json$Decode$null($elm$core$Maybe$Nothing),
+				A2($elm$json$Json$Decode$map, $elm$core$Maybe$Just, $elm$json$Json$Decode$string)
+			])));
 var $elm$browser$Browser$Events$Document = 0;
 var $elm$browser$Browser$Events$MySub = F3(
 	function (a, b, c) {
@@ -5898,7 +5919,7 @@ var $elm$browser$Browser$Events$MySub = F3(
 	});
 var $elm$browser$Browser$Events$State = F2(
 	function (subs, pids) {
-		return {bc: pids, bt: subs};
+		return {bx: pids, bP: subs};
 	});
 var $elm$browser$Browser$Events$init = $elm$core$Task$succeed(
 	A2($elm$browser$Browser$Events$State, _List_Nil, $elm$core$Dict$empty));
@@ -5932,7 +5953,7 @@ var $elm$core$Dict$fromList = function (assocs) {
 };
 var $elm$browser$Browser$Events$Event = F2(
 	function (key, event) {
-		return {aS: event, a1: key};
+		return {bb: event, bl: key};
 	});
 var $elm$browser$Browser$Events$spawn = F3(
 	function (router, key, _v0) {
@@ -6006,7 +6027,7 @@ var $elm$browser$Browser$Events$onEffects = F3(
 			stepLeft,
 			stepBoth,
 			stepRight,
-			state.bc,
+			state.bx,
 			$elm$core$Dict$fromList(newSubs),
 			_Utils_Tuple3(_List_Nil, $elm$core$Dict$empty, _List_Nil));
 		var deadPids = _v0.a;
@@ -6052,8 +6073,8 @@ var $elm$core$List$filterMap = F2(
 	});
 var $elm$browser$Browser$Events$onSelfMsg = F3(
 	function (router, _v0, state) {
-		var key = _v0.a1;
-		var event = _v0.aS;
+		var key = _v0.bl;
+		var event = _v0.bb;
 		var toMessage = function (_v2) {
 			var subKey = _v2.a;
 			var _v3 = _v2.b;
@@ -6062,7 +6083,7 @@ var $elm$browser$Browser$Events$onSelfMsg = F3(
 			var decoder = _v3.c;
 			return _Utils_eq(subKey, key) ? A2(_Browser_decodeEvent, decoder, event) : $elm$core$Maybe$Nothing;
 		};
-		var messages = A2($elm$core$List$filterMap, toMessage, state.bt);
+		var messages = A2($elm$core$List$filterMap, toMessage, state.bP);
 		return A2(
 			$elm$core$Task$andThen,
 			function (_v1) {
@@ -6093,31 +6114,416 @@ var $elm$browser$Browser$Events$on = F3(
 			A3($elm$browser$Browser$Events$MySub, node, name, decoder));
 	});
 var $elm$browser$Browser$Events$onKeyDown = A2($elm$browser$Browser$Events$on, 0, 'keydown');
-var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$Main$subscriptions = function (_v0) {
 	return $elm$core$Platform$Sub$batch(
 		_List_fromArray(
 			[
-				A2($elm$time$Time$every, 1000 / $author$project$Model$config.bZ, $author$project$Msg$Tick),
+				A2($elm$time$Time$every, 1000 / $author$project$Model$config.ck, $author$project$Msg$Tick),
 				$elm$browser$Browser$Events$onKeyDown(
 				A2(
 					$elm$json$Json$Decode$map,
 					$author$project$Main$keyToMsg,
-					A2($elm$json$Json$Decode$field, 'key', $elm$json$Json$Decode$string)))
+					A2($elm$json$Json$Decode$field, 'key', $elm$json$Json$Decode$string))),
+				A2(
+				$elm$time$Time$every,
+				5000,
+				function (_v1) {
+					return $author$project$Msg$AutoSave;
+				}),
+				$author$project$Storage$loadResponse($author$project$Msg$LoadedGame)
 			]));
 };
-var $author$project$Msg$AddNotification = function (a) {
-	return {$: 7, a: a};
+var $author$project$Msg$BuyItem = function (a) {
+	return {$: 1, a: a};
 };
 var $author$project$Msg$Clickpoop = {$: 0};
+var $author$project$Model$ConfirmingReset = 1;
 var $author$project$Msg$Hover = function (a) {
 	return {$: 4, a: a};
 };
-var $author$project$Domain$Notification$Model$Notification = F2(
-	function (message, life) {
-		return {b5: life, b6: message};
-	});
+var $author$project$Update$None = {$: 1};
+var $author$project$Update$Sound = function (a) {
+	return {$: 0, a: a};
+};
 var $author$project$Msg$Unhover = {$: 5};
+var $author$project$Storage$clear = _Platform_outgoingPort(
+	'clear',
+	function ($) {
+		return $elm$json$Json$Encode$null;
+	});
+var $elm$core$Maybe$andThen = F2(
+	function (callback, maybeValue) {
+		if (!maybeValue.$) {
+			var value = maybeValue.a;
+			return callback(value);
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
+	});
+var $elm$json$Json$Decode$decodeString = _Json_runOnString;
+var $miniBill$elm_codec$Codec$decoder = function (_v0) {
+	var m = _v0;
+	return m.ca;
+};
+var $miniBill$elm_codec$Codec$decodeString = function (codec) {
+	return $elm$json$Json$Decode$decodeString(
+		$miniBill$elm_codec$Codec$decoder(codec));
+};
+var $author$project$Model$Model = F4(
+	function (storeModel, achievementModel, notification, modalState) {
+		return {ax: achievementModel, aL: modalState, aN: notification, aX: storeModel};
+	});
+var $miniBill$elm_codec$Codec$Codec = $elm$core$Basics$identity;
+var $elm$json$Json$Encode$object = function (pairs) {
+	return _Json_wrap(
+		A3(
+			$elm$core$List$foldl,
+			F2(
+				function (_v0, obj) {
+					var k = _v0.a;
+					var v = _v0.b;
+					return A3(_Json_addField, k, v, obj);
+				}),
+			_Json_emptyObject(0),
+			pairs));
+};
+var $miniBill$elm_codec$Codec$buildObject = function (_v0) {
+	var om = _v0;
+	return {
+		ca: om.ca,
+		f: function (v) {
+			return $elm$json$Json$Encode$object(
+				$elm$core$List$reverse(
+					om.f(v)));
+		}
+	};
+};
+var $miniBill$elm_codec$Codec$ObjectCodec = $elm$core$Basics$identity;
+var $miniBill$elm_codec$Codec$encoder = function (_v0) {
+	var m = _v0;
+	return m.f;
+};
+var $miniBill$elm_codec$Codec$field = F4(
+	function (name, getter, codec, _v0) {
+		var ocodec = _v0;
+		return {
+			ca: A3(
+				$elm$json$Json$Decode$map2,
+				F2(
+					function (f, x) {
+						return f(x);
+					}),
+				ocodec.ca,
+				A2(
+					$elm$json$Json$Decode$field,
+					name,
+					$miniBill$elm_codec$Codec$decoder(codec))),
+			f: function (v) {
+				return A2(
+					$elm$core$List$cons,
+					_Utils_Tuple2(
+						name,
+						A2(
+							$miniBill$elm_codec$Codec$encoder,
+							codec,
+							getter(v))),
+					ocodec.f(v));
+			},
+			w: A2($elm$core$List$cons, name, ocodec.w)
+		};
+	});
+var $elm$json$Json$Decode$maybe = function (decoder) {
+	return $elm$json$Json$Decode$oneOf(
+		_List_fromArray(
+			[
+				A2($elm$json$Json$Decode$map, $elm$core$Maybe$Just, decoder),
+				$elm$json$Json$Decode$succeed($elm$core$Maybe$Nothing)
+			]));
+};
+var $miniBill$elm_codec$Codec$maybe = function (codec) {
+	return {
+		ca: $elm$json$Json$Decode$maybe(
+			$miniBill$elm_codec$Codec$decoder(codec)),
+		f: function (v) {
+			if (v.$ === 1) {
+				return $elm$json$Json$Encode$null;
+			} else {
+				var x = v.a;
+				return A2($miniBill$elm_codec$Codec$encoder, codec, x);
+			}
+		}
+	};
+};
+var $elm$json$Json$Decode$andThen = _Json_andThen;
+var $elm$json$Json$Decode$fail = _Json_fail;
+var $miniBill$elm_codec$Codec$buildCustom = function (_v0) {
+	var am = _v0;
+	return {
+		ca: A2(
+			$elm$json$Json$Decode$andThen,
+			function (tag) {
+				var _v1 = A2($elm$core$Dict$get, tag, am.ca);
+				if (_v1.$ === 1) {
+					return $elm$json$Json$Decode$fail('tag ' + (tag + ' did not match'));
+				} else {
+					var dec = _v1.a;
+					return A2($elm$json$Json$Decode$field, 'args', dec);
+				}
+			},
+			A2($elm$json$Json$Decode$field, 'tag', $elm$json$Json$Decode$string)),
+		f: function (v) {
+			return am.ar(v);
+		}
+	};
+};
+var $miniBill$elm_codec$Codec$CustomCodec = $elm$core$Basics$identity;
+var $miniBill$elm_codec$Codec$custom = function (match) {
+	return {ca: $elm$core$Dict$empty, ar: match};
+};
+var $elm$json$Json$Encode$list = F2(
+	function (func, entries) {
+		return _Json_wrap(
+			A3(
+				$elm$core$List$foldl,
+				_Json_addEntry(func),
+				_Json_emptyArray(0),
+				entries));
+	});
+var $elm$json$Json$Encode$string = _Json_wrap;
+var $miniBill$elm_codec$Codec$variant = F4(
+	function (name, matchPiece, decoderPiece, _v0) {
+		var am = _v0;
+		var enc = function (v) {
+			return $elm$json$Json$Encode$object(
+				_List_fromArray(
+					[
+						_Utils_Tuple2(
+						'tag',
+						$elm$json$Json$Encode$string(name)),
+						_Utils_Tuple2(
+						'args',
+						A2($elm$json$Json$Encode$list, $elm$core$Basics$identity, v))
+					]));
+		};
+		return {
+			ca: A3($elm$core$Dict$insert, name, decoderPiece, am.ca),
+			ar: am.ar(
+				matchPiece(enc))
+		};
+	});
+var $miniBill$elm_codec$Codec$variant0 = F2(
+	function (name, ctor) {
+		return A3(
+			$miniBill$elm_codec$Codec$variant,
+			name,
+			function (c) {
+				return c(_List_Nil);
+			},
+			$elm$json$Json$Decode$succeed(ctor));
+	});
+var $author$project$Model$modalStateCodec = $miniBill$elm_codec$Codec$buildCustom(
+	A3(
+		$miniBill$elm_codec$Codec$variant0,
+		'ConfirmingReset',
+		1,
+		A3(
+			$miniBill$elm_codec$Codec$variant0,
+			'NoModal',
+			0,
+			$miniBill$elm_codec$Codec$custom(
+				F3(
+					function (noModal, confirmingReset, value) {
+						if (!value) {
+							return noModal;
+						} else {
+							return confirmingReset;
+						}
+					})))));
+var $author$project$Domain$Achievement$Model$Model = F2(
+	function (achievements, hoveredAchievement) {
+		return {ay: achievements, aG: hoveredAchievement};
+	});
+var $author$project$Domain$Achievement$Model$Achievement = F4(
+	function (name, description, unlocked, kind) {
+		return {b: description, c: kind, d: name, e: unlocked};
+	});
+var $miniBill$elm_codec$Codec$build = F2(
+	function (encoder_, decoder_) {
+		return {ca: decoder_, f: encoder_};
+	});
+var $elm$json$Json$Decode$float = _Json_decodeFloat;
+var $elm$json$Json$Encode$float = _Json_wrap;
+var $miniBill$elm_codec$Codec$float = A2($miniBill$elm_codec$Codec$build, $elm$json$Json$Encode$float, $elm$json$Json$Decode$float);
+var $elm$json$Json$Decode$int = _Json_decodeInt;
+var $elm$json$Json$Encode$int = _Json_wrap;
+var $miniBill$elm_codec$Codec$int = A2($miniBill$elm_codec$Codec$build, $elm$json$Json$Encode$int, $elm$json$Json$Decode$int);
+var $author$project$Domain$Store$Item$itemIdCodec = $miniBill$elm_codec$Codec$buildCustom(
+	A3(
+		$miniBill$elm_codec$Codec$variant0,
+		'Factory',
+		4,
+		A3(
+			$miniBill$elm_codec$Codec$variant0,
+			'Mine',
+			3,
+			A3(
+				$miniBill$elm_codec$Codec$variant0,
+				'Farm',
+				2,
+				A3(
+					$miniBill$elm_codec$Codec$variant0,
+					'Grandma',
+					1,
+					A3(
+						$miniBill$elm_codec$Codec$variant0,
+						'Cursor',
+						0,
+						$miniBill$elm_codec$Codec$custom(
+							F6(
+								function (cursor, grandma, farm, mine, factory, value) {
+									switch (value) {
+										case 0:
+											return cursor;
+										case 1:
+											return grandma;
+										case 2:
+											return farm;
+										case 3:
+											return mine;
+										default:
+											return factory;
+									}
+								}))))))));
+var $elm$json$Json$Decode$index = _Json_decodeIndex;
+var $miniBill$elm_codec$Codec$variant1 = F3(
+	function (name, ctor, m1) {
+		return A3(
+			$miniBill$elm_codec$Codec$variant,
+			name,
+			F2(
+				function (c, v) {
+					return c(
+						_List_fromArray(
+							[
+								A2($miniBill$elm_codec$Codec$encoder, m1, v)
+							]));
+				}),
+			A2(
+				$elm$json$Json$Decode$map,
+				ctor,
+				A2(
+					$elm$json$Json$Decode$index,
+					0,
+					$miniBill$elm_codec$Codec$decoder(m1))));
+	});
+var $miniBill$elm_codec$Codec$variant2 = F4(
+	function (name, ctor, m1, m2) {
+		return A3(
+			$miniBill$elm_codec$Codec$variant,
+			name,
+			F3(
+				function (c, v1, v2) {
+					return c(
+						_List_fromArray(
+							[
+								A2($miniBill$elm_codec$Codec$encoder, m1, v1),
+								A2($miniBill$elm_codec$Codec$encoder, m2, v2)
+							]));
+				}),
+			A3(
+				$elm$json$Json$Decode$map2,
+				ctor,
+				A2(
+					$elm$json$Json$Decode$index,
+					0,
+					$miniBill$elm_codec$Codec$decoder(m1)),
+				A2(
+					$elm$json$Json$Decode$index,
+					1,
+					$miniBill$elm_codec$Codec$decoder(m2))));
+	});
+var $author$project$Domain$Achievement$Model$achievementKindCodec = $miniBill$elm_codec$Codec$buildCustom(
+	A5(
+		$miniBill$elm_codec$Codec$variant2,
+		'Ownitem',
+		$author$project$Domain$Achievement$Model$OwnItem,
+		$author$project$Domain$Store$Item$itemIdCodec,
+		$miniBill$elm_codec$Codec$int,
+		A4(
+			$miniBill$elm_codec$Codec$variant1,
+			'Totalpoop',
+			$author$project$Domain$Achievement$Model$TotalPoop,
+			$miniBill$elm_codec$Codec$float,
+			$miniBill$elm_codec$Codec$custom(
+				F3(
+					function (totalpoop, ownitem, value) {
+						if (!value.$) {
+							var f = value.a;
+							return totalpoop(f);
+						} else {
+							var id = value.a;
+							var i = value.b;
+							return A2(ownitem, id, i);
+						}
+					})))));
+var $elm$json$Json$Decode$bool = _Json_decodeBool;
+var $elm$json$Json$Encode$bool = _Json_wrap;
+var $miniBill$elm_codec$Codec$bool = A2($miniBill$elm_codec$Codec$build, $elm$json$Json$Encode$bool, $elm$json$Json$Decode$bool);
+var $miniBill$elm_codec$Codec$object = function (ctor) {
+	return {
+		ca: $elm$json$Json$Decode$succeed(ctor),
+		f: function (_v0) {
+			return _List_Nil;
+		},
+		w: _List_Nil
+	};
+};
+var $miniBill$elm_codec$Codec$string = A2($miniBill$elm_codec$Codec$build, $elm$json$Json$Encode$string, $elm$json$Json$Decode$string);
+var $author$project$Domain$Achievement$Model$achievementCodec = $miniBill$elm_codec$Codec$buildObject(
+	A4(
+		$miniBill$elm_codec$Codec$field,
+		'kind',
+		function ($) {
+			return $.c;
+		},
+		$author$project$Domain$Achievement$Model$achievementKindCodec,
+		A4(
+			$miniBill$elm_codec$Codec$field,
+			'unlocked',
+			function ($) {
+				return $.e;
+			},
+			$miniBill$elm_codec$Codec$bool,
+			A4(
+				$miniBill$elm_codec$Codec$field,
+				'description',
+				function ($) {
+					return $.b;
+				},
+				$miniBill$elm_codec$Codec$string,
+				A4(
+					$miniBill$elm_codec$Codec$field,
+					'name',
+					function ($) {
+						return $.d;
+					},
+					$miniBill$elm_codec$Codec$string,
+					$miniBill$elm_codec$Codec$object($author$project$Domain$Achievement$Model$Achievement))))));
+var $miniBill$elm_codec$Codec$composite = F3(
+	function (enc, dec, _v0) {
+		var codec = _v0;
+		return {
+			ca: dec(codec.ca),
+			f: enc(codec.f)
+		};
+	});
+var $elm$json$Json$Decode$list = _Json_decodeList;
+var $miniBill$elm_codec$Codec$list = A2($miniBill$elm_codec$Codec$composite, $elm$json$Json$Encode$list, $elm$json$Json$Decode$list);
 var $elm$core$List$any = F2(
 	function (isOkay, list) {
 		any:
@@ -6139,6 +6545,257 @@ var $elm$core$List$any = F2(
 			}
 		}
 	});
+var $elm$json$Json$Decode$keyValuePairs = _Json_decodeKeyValuePairs;
+var $elm$json$Json$Decode$value = _Json_decodeValue;
+var $miniBill$elm_codec$Codec$optionalMaybeField = F4(
+	function (name, getter, codec, _v0) {
+		var ocodec = _v0;
+		return {
+			ca: A3(
+				$elm$json$Json$Decode$map2,
+				F2(
+					function (f, x) {
+						return f(x);
+					}),
+				ocodec.ca,
+				A2(
+					$elm$json$Json$Decode$andThen,
+					function (json) {
+						return A2(
+							$elm$core$List$any,
+							function (_v1) {
+								var k = _v1.a;
+								return _Utils_eq(k, name);
+							},
+							json) ? A2(
+							$elm$json$Json$Decode$field,
+							name,
+							$miniBill$elm_codec$Codec$decoder(codec)) : $elm$json$Json$Decode$succeed($elm$core$Maybe$Nothing);
+					},
+					$elm$json$Json$Decode$keyValuePairs($elm$json$Json$Decode$value))),
+			f: function (v) {
+				var _v2 = getter(v);
+				if (!_v2.$) {
+					var present = _v2.a;
+					return A2(
+						$elm$core$List$cons,
+						_Utils_Tuple2(
+							name,
+							A2(
+								$miniBill$elm_codec$Codec$encoder,
+								codec,
+								$elm$core$Maybe$Just(present))),
+						ocodec.f(v));
+				} else {
+					return ocodec.f(v);
+				}
+			},
+			w: A2($elm$core$List$cons, name, ocodec.w)
+		};
+	});
+var $author$project$Domain$Achievement$Model$modelCodec = $miniBill$elm_codec$Codec$buildObject(
+	A4(
+		$miniBill$elm_codec$Codec$optionalMaybeField,
+		'hoveredAchievement',
+		function ($) {
+			return $.aG;
+		},
+		$miniBill$elm_codec$Codec$maybe($author$project$Domain$Achievement$Model$achievementCodec),
+		A4(
+			$miniBill$elm_codec$Codec$field,
+			'achievements',
+			function ($) {
+				return $.ay;
+			},
+			$miniBill$elm_codec$Codec$list($author$project$Domain$Achievement$Model$achievementCodec),
+			$miniBill$elm_codec$Codec$object($author$project$Domain$Achievement$Model$Model))));
+var $author$project$Domain$Notification$Model$Model = F2(
+	function (message, life) {
+		return {bo: life, bp: message};
+	});
+var $author$project$Domain$Notification$Model$modelCodec = $miniBill$elm_codec$Codec$buildObject(
+	A4(
+		$miniBill$elm_codec$Codec$field,
+		'life',
+		function ($) {
+			return $.bo;
+		},
+		$miniBill$elm_codec$Codec$float,
+		A4(
+			$miniBill$elm_codec$Codec$field,
+			'message',
+			function ($) {
+				return $.bp;
+			},
+			$miniBill$elm_codec$Codec$string,
+			$miniBill$elm_codec$Codec$object($author$project$Domain$Notification$Model$Model))));
+var $author$project$Domain$Store$Model$Model = F5(
+	function (poop, totalpoop, clickPower, items, poopPerSecond) {
+		return {aB: clickPower, aI: items, aP: poop, aQ: poopPerSecond, a_: totalpoop};
+	});
+var $author$project$Domain$Store$Item$Item = F6(
+	function (id, description, baseCost, basePps, curPps, qty) {
+		return {P: baseCost, Q: basePps, S: curPps, b: description, cl: id, cH: qty};
+	});
+var $author$project$Domain$Store$Item$itemCodec = $miniBill$elm_codec$Codec$buildObject(
+	A4(
+		$miniBill$elm_codec$Codec$field,
+		'qty',
+		function ($) {
+			return $.cH;
+		},
+		$miniBill$elm_codec$Codec$int,
+		A4(
+			$miniBill$elm_codec$Codec$field,
+			'curPps',
+			function ($) {
+				return $.S;
+			},
+			$miniBill$elm_codec$Codec$float,
+			A4(
+				$miniBill$elm_codec$Codec$field,
+				'basePps',
+				function ($) {
+					return $.Q;
+				},
+				$miniBill$elm_codec$Codec$float,
+				A4(
+					$miniBill$elm_codec$Codec$field,
+					'baseCost',
+					function ($) {
+						return $.P;
+					},
+					$miniBill$elm_codec$Codec$float,
+					A4(
+						$miniBill$elm_codec$Codec$field,
+						'description',
+						function ($) {
+							return $.b;
+						},
+						$miniBill$elm_codec$Codec$string,
+						A4(
+							$miniBill$elm_codec$Codec$field,
+							'itemId',
+							function ($) {
+								return $.cl;
+							},
+							$author$project$Domain$Store$Item$itemIdCodec,
+							$miniBill$elm_codec$Codec$object($author$project$Domain$Store$Item$Item))))))));
+var $author$project$Domain$Store$Model$modelCodec = $miniBill$elm_codec$Codec$buildObject(
+	A4(
+		$miniBill$elm_codec$Codec$field,
+		'poopPerSecond',
+		function ($) {
+			return $.aQ;
+		},
+		$miniBill$elm_codec$Codec$float,
+		A4(
+			$miniBill$elm_codec$Codec$field,
+			'items',
+			function ($) {
+				return $.aI;
+			},
+			$miniBill$elm_codec$Codec$list($author$project$Domain$Store$Item$itemCodec),
+			A4(
+				$miniBill$elm_codec$Codec$field,
+				'clickPower',
+				function ($) {
+					return $.aB;
+				},
+				$miniBill$elm_codec$Codec$float,
+				A4(
+					$miniBill$elm_codec$Codec$field,
+					'totalpoop',
+					function ($) {
+						return $.a_;
+					},
+					$miniBill$elm_codec$Codec$float,
+					A4(
+						$miniBill$elm_codec$Codec$field,
+						'poop',
+						function ($) {
+							return $.aP;
+						},
+						$miniBill$elm_codec$Codec$float,
+						$miniBill$elm_codec$Codec$object($author$project$Domain$Store$Model$Model)))))));
+var $author$project$Model$modelCodec = $miniBill$elm_codec$Codec$buildObject(
+	A4(
+		$miniBill$elm_codec$Codec$field,
+		'modalState',
+		function ($) {
+			return $.aL;
+		},
+		$author$project$Model$modalStateCodec,
+		A4(
+			$miniBill$elm_codec$Codec$optionalMaybeField,
+			'notification',
+			function ($) {
+				return $.aN;
+			},
+			$miniBill$elm_codec$Codec$maybe($author$project$Domain$Notification$Model$modelCodec),
+			A4(
+				$miniBill$elm_codec$Codec$field,
+				'achievementModel',
+				function ($) {
+					return $.ax;
+				},
+				$author$project$Domain$Achievement$Model$modelCodec,
+				A4(
+					$miniBill$elm_codec$Codec$field,
+					'storeModel',
+					function ($) {
+						return $.aX;
+					},
+					$author$project$Domain$Store$Model$modelCodec,
+					$miniBill$elm_codec$Codec$object($author$project$Model$Model))))));
+var $elm$core$Result$toMaybe = function (result) {
+	if (!result.$) {
+		var v = result.a;
+		return $elm$core$Maybe$Just(v);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var $author$project$Update$decodeModel = function (maybeString) {
+	return A2(
+		$elm$core$Maybe$withDefault,
+		$author$project$Model$modelInit(0),
+		A2(
+			$elm$core$Maybe$andThen,
+			A2(
+				$elm$core$Basics$composeR,
+				$miniBill$elm_codec$Codec$decodeString($author$project$Model$modelCodec),
+				$elm$core$Result$toMaybe),
+			maybeString));
+};
+var $author$project$Assets$playSound = _Platform_outgoingPort('playSound', $elm$json$Json$Encode$string);
+var $author$project$Update$withSoundEffect = F2(
+	function (sound, model) {
+		return _Utils_Tuple2(
+			model,
+			$author$project$Assets$playSound(sound));
+	});
+var $author$project$Update$addNotification = F4(
+	function (message, duration, sound, model) {
+		return A2(
+			$author$project$Update$withSoundEffect,
+			sound,
+			_Utils_update(
+				model,
+				{
+					aN: $elm$core$Maybe$Just(
+						A2($author$project$Domain$Notification$Model$Model, message, duration))
+				}));
+	});
 var $elm$core$List$member = F2(
 	function (x, xs) {
 		return A2(
@@ -6157,16 +6814,278 @@ var $author$project$Domain$Achievement$Utils$applyUnlocks = F2(
 					ach,
 					{e: true}) : ach;
 			},
-			model.aG);
+			model.ay);
 		return _Utils_update(
 			model,
-			{aG: newAchievements});
+			{ay: newAchievements});
+	});
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$Basics$ge = _Utils_ge;
+var $elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(x);
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return $elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $author$project$Domain$Achievement$Utils$hasQty = F3(
+	function (id, amount, items) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			false,
+			A2(
+				$elm$core$Maybe$map,
+				function (i) {
+					return _Utils_cmp(i.cH, amount) > -1;
+				},
+				$elm$core$List$head(
+					A2(
+						$elm$core$List$filter,
+						function (i) {
+							return _Utils_eq(i.cl, id);
+						},
+						items))));
+	});
+var $elm$core$Basics$not = _Basics_not;
+var $author$project$Domain$Achievement$Utils$isUnlocked = F3(
+	function (modelTotalpoop, modelItems, ach) {
+		return (!ach.e) && function () {
+			var _v0 = ach.c;
+			if (!_v0.$) {
+				var n = _v0.a;
+				return _Utils_cmp(modelTotalpoop, n) > -1;
+			} else {
+				var itemId = _v0.a;
+				var qty = _v0.b;
+				return A3($author$project$Domain$Achievement$Utils$hasQty, itemId, qty, modelItems);
+			}
+		}();
+	});
+var $author$project$Domain$Achievement$Utils$computeNewUnlocks = F3(
+	function (totalpoop, items, achievements) {
+		var achIsUnlocked = A2($author$project$Domain$Achievement$Utils$isUnlocked, totalpoop, items);
+		return A2($elm$core$List$filter, achIsUnlocked, achievements);
+	});
+var $elm$core$Basics$always = F2(
+	function (a, _v0) {
+		return a;
+	});
+var $author$project$Update$maybeLast = A2(
+	$elm$core$List$foldl,
+	A2($elm$core$Basics$composeR, $elm$core$Maybe$Just, $elm$core$Basics$always),
+	$elm$core$Maybe$Nothing);
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$Update$withNoCmd = function (model) {
+	return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+};
+var $author$project$Update$handleAchievements = F2(
+	function (context, model) {
+		var unlocks = A3($author$project$Domain$Achievement$Utils$computeNewUnlocks, model.aX.a_, model.aX.aI, model.ax.ay);
+		var updatedModel = _Utils_update(
+			model,
+			{
+				ax: A2($author$project$Domain$Achievement$Utils$applyUnlocks, unlocks, model.ax)
+			});
+		var _v0 = $author$project$Update$maybeLast(unlocks);
+		if (!_v0.$) {
+			var achievement = _v0.a;
+			var sound = function () {
+				_v1$2:
+				while (true) {
+					if (!context.$) {
+						switch (context.a) {
+							case 'click':
+								return 'clickAch';
+							case 'store':
+								return 'storeAch';
+							default:
+								break _v1$2;
+						}
+					} else {
+						break _v1$2;
+					}
+				}
+				return 'achievement';
+			}();
+			var message = 'Achievement: \'' + (achievement.d + '\'');
+			return A4($author$project$Update$addNotification, message, 4.0, sound, updatedModel);
+		} else {
+			if (!context.$) {
+				var sound = context.a;
+				return A2($author$project$Update$withSoundEffect, sound, updatedModel);
+			} else {
+				return $author$project$Update$withNoCmd(updatedModel);
+			}
+		}
+	});
+var $elm$core$List$all = F2(
+	function (isOkay, list) {
+		return !A2(
+			$elm$core$List$any,
+			A2($elm$core$Basics$composeL, $elm$core$Basics$not, isOkay),
+			list);
+	});
+var $elm$core$List$maximum = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return $elm$core$Maybe$Just(
+			A3($elm$core$List$foldl, $elm$core$Basics$max, x, xs));
+	} else {
+		return $elm$core$Maybe$Nothing;
+	}
+};
+var $author$project$Assets$tiers = _List_fromArray(
+	[
+		{m: '8B4513', n: 'little poop man', p: 0},
+		{m: 'CD853F', n: 'big poop man', p: 10},
+		{m: 'D4AF37', n: 'super poop man', p: 50},
+		{m: 'FFD700', n: 'ultra poop man', p: 100},
+		{m: '1B1B1B', n: 'volcanic poop man', p: 200},
+		{m: '7A7A7A', n: 'tectonic poop man', p: 500},
+		{m: '4A90E2', n: 'worldwide poop man', p: 1000},
+		{m: 'c0c0c0', n: 'lunar poop man', p: 2000},
+		{m: 'fce570', n: 'solar poop man', p: 5000},
+		{m: 'e9eeee', n: 'stellar poop man', p: 10000},
+		{m: '5b3f00', n: 'galactic poop man', p: 20000},
+		{m: '20124d', n: 'intergalactic poop man', p: 50000},
+		{m: '3461a4', n: 'total poop man', p: 100000},
+		{m: '16ede6', n: 'complete poop man', p: 200000},
+		{m: '8B4513', n: 'little poop man', p: 500000}
+	]);
+var $author$project$Domain$Achievement$Utils$maxTier = A2(
+	$elm$core$Maybe$withDefault,
+	0,
+	$elm$core$List$maximum(
+		A2(
+			$elm$core$List$map,
+			function (t) {
+				return t.p;
+			},
+			$author$project$Assets$tiers)));
+var $author$project$Domain$Achievement$Utils$checkAllDone = F2(
+	function (achievements, pps) {
+		return function (b) {
+			return b && (_Utils_cmp(pps, $author$project$Domain$Achievement$Utils$maxTier) > 0);
+		}(
+			A2(
+				$elm$core$List$all,
+				function (ach) {
+					return ach.e;
+				},
+				achievements));
+	});
+var $author$project$Update$handleGameCompletion = function (model) {
+	return (A2($author$project$Domain$Achievement$Utils$checkAllDone, model.ax.ay, model.aX.aQ) && _Utils_eq(model.aN, $elm$core$Maybe$Nothing)) ? A4($author$project$Update$addNotification, 'Congratulations! You finished the game :). Thanks for playing!', 60 * 925600, 'achievement', model) : $author$project$Update$withNoCmd(model);
+};
+var $author$project$Update$step = F2(
+	function (fn, _v0) {
+		var model = _v0.a;
+		var accumulatedCmds = _v0.b;
+		var _v1 = fn(model);
+		var nextModel = _v1.a;
+		var nextCmd = _v1.b;
+		return _Utils_Tuple2(
+			nextModel,
+			$elm$core$Platform$Cmd$batch(
+				_List_fromArray(
+					[accumulatedCmds, nextCmd])));
+	});
+var $author$project$Domain$Achievement$Update$updateAchievements = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 4:
+				var ach = msg.a;
+				var modelWithHover = _Utils_update(
+					model,
+					{
+						aG: $elm$core$Maybe$Just(ach)
+					});
+				return modelWithHover;
+			case 5:
+				var modelWithoutHover = _Utils_update(
+					model,
+					{aG: $elm$core$Maybe$Nothing});
+				return modelWithoutHover;
+			case 7:
+				return model;
+			case 0:
+				return model;
+			case 2:
+				return model;
+			case 1:
+				return model;
+			case 3:
+				return model;
+			case 6:
+				return model;
+			case 8:
+				return model;
+			case 9:
+				return model;
+			default:
+				return model;
+		}
+	});
+var $author$project$Update$updateAchievementModel = F2(
+	function (msg, model) {
+		return _Utils_update(
+			model,
+			{
+				ax: A2($author$project$Domain$Achievement$Update$updateAchievements, msg, model.ax)
+			});
+	});
+var $author$project$Domain$Notification$Utils$tickNotification = F2(
+	function (deltaTime, notification) {
+		var newLife = notification.bo - deltaTime;
+		return (newLife > 0) ? $elm$core$Maybe$Just(
+			_Utils_update(
+				notification,
+				{bo: newLife})) : $elm$core$Maybe$Nothing;
+	});
+var $author$project$Domain$Notification$Utils$tickMaybeNotification = F2(
+	function (deltaTime, maybeNotification) {
+		return A2(
+			$elm$core$Maybe$andThen,
+			$author$project$Domain$Notification$Utils$tickNotification(deltaTime),
+			maybeNotification);
+	});
+var $author$project$Update$updateNotification = F2(
+	function (dt, model) {
+		return _Utils_update(
+			model,
+			{
+				aN: A2($author$project$Domain$Notification$Utils$tickMaybeNotification, dt, model.aN)
+			});
 	});
 var $elm$core$Basics$pow = _Basics_pow;
 var $elm$core$Basics$round = _Basics_round;
 var $author$project$Domain$Store$Utils$calculateCost = function (item) {
 	return $elm$core$Basics$round(
-		item.V * A2($elm$core$Basics$pow, 1.15, item.cl));
+		item.P * A2($elm$core$Basics$pow, 1.15, item.cH));
 };
 var $elm$core$List$sum = function (numbers) {
 	return A3($elm$core$List$foldl, $elm$core$Basics$add, 0, numbers);
@@ -6176,11 +7095,10 @@ var $author$project$Domain$Store$Utils$calculatePps = function (items) {
 		A2(
 			$elm$core$List$map,
 			function (i) {
-				return i.X * i.cl;
+				return i.S * i.cH;
 			},
 			items));
 };
-var $elm$core$Basics$ge = _Utils_ge;
 var $elm$core$Dict$filter = F2(
 	function (isGood, dict) {
 		return A3(
@@ -6203,15 +7121,6 @@ var $elm$core$Dict$values = function (dict) {
 		_List_Nil,
 		dict);
 };
-var $elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (!maybe.$) {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
 var $author$project$Domain$Store$Utils$getCursorFactoryBonus = F2(
 	function (name, owned) {
 		var factoryQty = A2(
@@ -6257,7 +7166,7 @@ var $author$project$Domain$Store$Utils$getNeighborBoost = F2(
 var $author$project$Assets$placeholderImage = function (name) {
 	return 'https://placehold.co/64x64/png?text=' + name;
 };
-var $author$project$Domain$Store$Model$itemMeta = function (id) {
+var $author$project$Domain$Store$Item$itemMeta = function (id) {
 	var name = function () {
 		switch (id) {
 			case 0:
@@ -6267,28 +7176,28 @@ var $author$project$Domain$Store$Model$itemMeta = function (id) {
 			case 2:
 				return 'Farm';
 			case 3:
-				return 'Factory';
-			default:
 				return 'Mine';
+			default:
+				return 'Factory';
 		}
 	}();
 	return {
-		a_: $author$project$Assets$placeholderImage(name),
+		bj: $author$project$Assets$placeholderImage(name),
 		d: name
 	};
 };
 var $author$project$Domain$Store$Utils$getItemPps = F2(
 	function (item, owned) {
-		var qty = A2($elm$core$Basics$max, item.cl - 1, 0);
-		var name = $author$project$Domain$Store$Model$itemMeta(item.b_).d;
-		var selfMultiplier = (name === 'Grandma') ? ((item.cl >= 50) ? A2($elm$core$Basics$pow, 1.05, qty) : ((item.cl >= 25) ? A2($elm$core$Basics$pow, 1.04, qty) : ((item.cl >= 10) ? A2($elm$core$Basics$pow, 1.03, qty) : A2($elm$core$Basics$pow, 1.02, qty)))) : A2($elm$core$Basics$pow, 1.02, qty);
+		var qty = A2($elm$core$Basics$max, item.cH - 1, 0);
+		var name = $author$project$Domain$Store$Item$itemMeta(item.cl).d;
+		var selfMultiplier = (name === 'Grandma') ? ((item.cH >= 50) ? A2($elm$core$Basics$pow, 1.05, qty) : ((item.cH >= 25) ? A2($elm$core$Basics$pow, 1.04, qty) : ((item.cH >= 10) ? A2($elm$core$Basics$pow, 1.03, qty) : A2($elm$core$Basics$pow, 1.02, qty)))) : A2($elm$core$Basics$pow, 1.02, qty);
 		var grandmaQty = A2(
 			$elm$core$Maybe$withDefault,
 			0,
 			A2($elm$core$Dict$get, 'Grandma', owned));
 		var synergyBoost = A2($elm$core$Basics$pow, 1.005, grandmaQty) * A2($author$project$Domain$Store$Utils$getNeighborBoost, name, owned);
 		var flatModifiers = A2($author$project$Domain$Store$Utils$getCursorFactoryBonus, name, owned);
-		return ((item.W + flatModifiers) * selfMultiplier) * synergyBoost;
+		return ((item.Q + flatModifiers) * selfMultiplier) * synergyBoost;
 	});
 var $author$project$Domain$Store$Utils$getOwnedQty = function (items) {
 	return $elm$core$Dict$fromList(
@@ -6296,37 +7205,28 @@ var $author$project$Domain$Store$Utils$getOwnedQty = function (items) {
 			$elm$core$List$map,
 			function (i) {
 				return _Utils_Tuple2(
-					$author$project$Domain$Store$Model$itemMeta(i.b_).d,
-					i.cl);
+					$author$project$Domain$Store$Item$itemMeta(i.cl).d,
+					i.cH);
 			},
 			items));
-};
-var $elm$core$List$head = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(x);
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
 };
 var $author$project$Domain$Store$Utils$buyItem = F2(
 	function (id, model) {
 		var tryBuy = function (item) {
-			if (_Utils_eq(item.b_, id)) {
+			if (_Utils_eq(item.cl, id)) {
 				var cost = $author$project$Domain$Store$Utils$calculateCost(item);
-				return (_Utils_cmp(model.bd, cost) > -1) ? $elm$core$Maybe$Just(
+				return (_Utils_cmp(model.aP, cost) > -1) ? $elm$core$Maybe$Just(
 					_Utils_Tuple2(
 						_Utils_update(
 							item,
-							{cl: item.cl + 1}),
+							{cH: item.cH + 1}),
 						cost)) : $elm$core$Maybe$Nothing;
 			} else {
 				return $elm$core$Maybe$Nothing;
 			}
 		};
 		var found = $elm$core$List$head(
-			A2($elm$core$List$filterMap, tryBuy, model.a0));
+			A2($elm$core$List$filterMap, tryBuy, model.aI));
 		if (!found.$) {
 			var _v1 = found.a;
 			var newItem = _v1.a;
@@ -6334,9 +7234,9 @@ var $author$project$Domain$Store$Utils$buyItem = F2(
 			var itemsWithNewItem = A2(
 				$elm$core$List$map,
 				function (i) {
-					return _Utils_eq(i.b_, id) ? newItem : i;
+					return _Utils_eq(i.cl, id) ? newItem : i;
 				},
-				model.a0);
+				model.aI);
 			var owned = $author$project$Domain$Store$Utils$getOwnedQty(itemsWithNewItem);
 			var newItems = A2(
 				$elm$core$List$map,
@@ -6344,235 +7244,37 @@ var $author$project$Domain$Store$Utils$buyItem = F2(
 					return _Utils_update(
 						i,
 						{
-							X: A2($author$project$Domain$Store$Utils$getItemPps, i, owned)
+							S: A2($author$project$Domain$Store$Utils$getItemPps, i, owned)
 						});
 				},
 				itemsWithNewItem);
 			var modelAfterBuy = _Utils_update(
 				model,
 				{
-					a0: newItems,
-					bd: model.bd - cost,
-					be: $author$project$Domain$Store$Utils$calculatePps(newItems)
+					aI: newItems,
+					aP: model.aP - cost,
+					aQ: $author$project$Domain$Store$Utils$calculatePps(newItems)
 				});
 			return modelAfterBuy;
 		} else {
 			return model;
 		}
 	});
-var $elm$core$Basics$not = _Basics_not;
-var $elm$core$List$all = F2(
-	function (isOkay, list) {
-		return !A2(
-			$elm$core$List$any,
-			A2($elm$core$Basics$composeL, $elm$core$Basics$not, isOkay),
-			list);
-	});
-var $elm$core$List$maximum = function (list) {
-	if (list.b) {
-		var x = list.a;
-		var xs = list.b;
-		return $elm$core$Maybe$Just(
-			A3($elm$core$List$foldl, $elm$core$Basics$max, x, xs));
-	} else {
-		return $elm$core$Maybe$Nothing;
-	}
-};
-var $author$project$Assets$tiers = _List_fromArray(
-	[
-		{l: '8B4513', m: 'little poop man', o: 0},
-		{l: 'CD853F', m: 'big poop man', o: 10},
-		{l: 'D4AF37', m: 'super poop man', o: 50},
-		{l: 'FFD700', m: 'ultra poop man', o: 100},
-		{l: '1B1B1B', m: 'volcanic poop man', o: 200},
-		{l: '7A7A7A', m: 'tectonic poop man', o: 500},
-		{l: '4A90E2', m: 'worldwide poop man', o: 1000},
-		{l: 'c0c0c0', m: 'lunar poop man', o: 2000},
-		{l: 'fce570', m: 'solar poop man', o: 5000},
-		{l: 'e9eeee', m: 'stellar poop man', o: 10000},
-		{l: '5b3f00', m: 'galactic poop man', o: 20000},
-		{l: '20124d', m: 'intergalactic poop man', o: 50000},
-		{l: '3461a4', m: 'total poop man', o: 100000},
-		{l: '16ede6', m: 'complete poop man', o: 200000},
-		{l: '8B4513', m: 'little poop man', o: 500000}
-	]);
-var $author$project$Domain$Achievement$Utils$maybeMaxTier = $elm$core$List$maximum(
-	A2(
-		$elm$core$List$map,
-		function (t) {
-			return t.o;
-		},
-		$author$project$Assets$tiers));
-var $author$project$Domain$Achievement$Utils$maxTier = function () {
-	var _v0 = $author$project$Domain$Achievement$Utils$maybeMaxTier;
-	if (!_v0.$) {
-		var f = _v0.a;
-		return f;
-	} else {
-		return 0;
-	}
-}();
-var $author$project$Domain$Achievement$Utils$checkAllDone = F2(
-	function (achievements, pps) {
-		return function (b) {
-			return b && (_Utils_cmp(pps, $author$project$Domain$Achievement$Utils$maxTier) > 0);
-		}(
-			A2(
-				$elm$core$List$all,
-				function (ach) {
-					return ach.e;
-				},
-				achievements));
-	});
-var $elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
-var $elm$core$Maybe$map = F2(
-	function (f, maybe) {
-		if (!maybe.$) {
-			var value = maybe.a;
-			return $elm$core$Maybe$Just(
-				f(value));
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
-var $author$project$Domain$Achievement$Utils$hasQty = F3(
-	function (id, amount, items) {
-		return A2(
-			$elm$core$Maybe$withDefault,
-			false,
-			A2(
-				$elm$core$Maybe$map,
-				function (i) {
-					return _Utils_cmp(i.cl, amount) > -1;
-				},
-				$elm$core$List$head(
-					A2(
-						$elm$core$List$filter,
-						function (i) {
-							return _Utils_eq(i.b_, id);
-						},
-						items))));
-	});
-var $author$project$Domain$Achievement$Utils$isUnlocked = F3(
-	function (modelTotalpoop, modelItems, ach) {
-		return (!ach.e) && function () {
-			var _v0 = ach.c;
-			if (!_v0.$) {
-				var n = _v0.a;
-				return _Utils_cmp(modelTotalpoop, n) > -1;
-			} else {
-				var itemId = _v0.a;
-				var qty = _v0.b;
-				return A3($author$project$Domain$Achievement$Utils$hasQty, itemId, qty, modelItems);
-			}
-		}();
-	});
-var $author$project$Domain$Achievement$Utils$computeNewUnlocks = F3(
-	function (totalpoop, items, achievements) {
-		var achIsUnlocked = A2($author$project$Domain$Achievement$Utils$isUnlocked, totalpoop, items);
-		return A2($elm$core$List$filter, achIsUnlocked, achievements);
-	});
-var $author$project$Msg$CheckAchievements = function (a) {
-	return {$: 6, a: a};
-};
-var $author$project$Update$getAchMsg = function (storeModel) {
-	return $author$project$Msg$CheckAchievements(
-		_Utils_Tuple2(storeModel.bw, storeModel.a0));
-};
-var $elm$core$Basics$always = F2(
-	function (a, _v0) {
-		return a;
-	});
-var $elm$core$Basics$composeR = F3(
-	function (f, g, x) {
-		return g(
-			f(x));
-	});
-var $author$project$Update$maybeLastElem = A2(
-	$elm$core$List$foldl,
-	A2($elm$core$Basics$composeR, $elm$core$Maybe$Just, $elm$core$Basics$always),
-	$elm$core$Maybe$Nothing);
-var $elm$json$Json$Encode$string = _Json_wrap;
-var $author$project$Assets$playSound = _Platform_outgoingPort('playSound', $elm$json$Json$Encode$string);
-var $elm$core$Maybe$andThen = F2(
-	function (callback, maybeValue) {
-		if (!maybeValue.$) {
-			var value = maybeValue.a;
-			return callback(value);
-		} else {
-			return $elm$core$Maybe$Nothing;
-		}
-	});
-var $author$project$Domain$Notification$Utils$tickNotification = F2(
-	function (deltaTime, notification) {
-		var newLife = notification.b5 - deltaTime;
-		return (newLife > 0) ? $elm$core$Maybe$Just(
-			_Utils_update(
-				notification,
-				{b5: newLife})) : $elm$core$Maybe$Nothing;
-	});
-var $author$project$Domain$Notification$Utils$tickMaybeNotification = F2(
-	function (deltaTime, maybeNotification) {
-		return A2(
-			$elm$core$Maybe$andThen,
-			$author$project$Domain$Notification$Utils$tickNotification(deltaTime),
-			maybeNotification);
-	});
-var $author$project$Domain$Achievement$Update$updateAchievements = F2(
-	function (msg, model) {
-		switch (msg.$) {
-			case 6:
-				return model;
-			case 4:
-				var ach = msg.a;
-				var modelWithHover = _Utils_update(
-					model,
-					{
-						aZ: $elm$core$Maybe$Just(ach)
-					});
-				return modelWithHover;
-			case 5:
-				var modelWithoutHover = _Utils_update(
-					model,
-					{aZ: $elm$core$Maybe$Nothing});
-				return modelWithoutHover;
-			case 0:
-				return model;
-			case 2:
-				return model;
-			case 1:
-				return model;
-			case 3:
-				return model;
-			default:
-				return model;
-		}
-	});
 var $author$project$Domain$Store$Update$updateStore = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 0:
-				var newpoop = model.bd + model.aM;
-				var newTotal = model.bw + model.aM;
+				var newpoop = model.aP + model.aB;
+				var newTotal = model.a_ + model.aB;
 				var updatedModel = _Utils_update(
 					model,
-					{bd: newpoop, bw: newTotal});
+					{aP: newpoop, a_: newTotal});
 				return updatedModel;
 			case 2:
-				var poopPerTick = model.be / $author$project$Model$config.bZ;
+				var poopPerTick = model.aQ / $author$project$Model$config.ck;
 				var modelWithResources = _Utils_update(
 					model,
-					{bd: model.bd + poopPerTick, bw: model.bw + poopPerTick});
+					{aP: model.aP + poopPerTick, a_: model.a_ + poopPerTick});
 				return modelWithResources;
 			case 1:
 				var id = msg.a;
@@ -6582,134 +7284,116 @@ var $author$project$Domain$Store$Update$updateStore = F2(
 				return model;
 			case 5:
 				return model;
+			case 7:
+				return model;
 			case 3:
 				return model;
 			case 6:
+				return model;
+			case 8:
+				return model;
+			case 9:
 				return model;
 			default:
 				return model;
 		}
 	});
+var $author$project$Update$updateStoreModel = F2(
+	function (msg, model) {
+		return _Utils_update(
+			model,
+			{
+				aX: A2($author$project$Domain$Store$Update$updateStore, msg, model.aX)
+			});
+	});
+var $author$project$Update$withCmd = F2(
+	function (cmd, model) {
+		return _Utils_Tuple2(model, cmd);
+	});
+var $miniBill$elm_codec$Codec$encodeToString = F2(
+	function (indentation, codec) {
+		return A2(
+			$elm$core$Basics$composeR,
+			$miniBill$elm_codec$Codec$encoder(codec),
+			$elm$json$Json$Encode$encode(indentation));
+	});
+var $author$project$Storage$save = _Platform_outgoingPort('save', $elm$json$Json$Encode$string);
+var $author$project$Update$withSaveCmd = function (model) {
+	return _Utils_Tuple2(
+		model,
+		$author$project$Storage$save(
+			A3($miniBill$elm_codec$Codec$encodeToString, 0, $author$project$Model$modelCodec, model)));
+};
 var $author$project$Update$update = F2(
 	function (msg, model) {
-		update:
-		while (true) {
-			switch (msg.$) {
-				case 0:
-					var updatedStoreModel = A2($author$project$Domain$Store$Update$updateStore, $author$project$Msg$Clickpoop, model.bq);
-					var updatedModel = _Utils_update(
+		switch (msg.$) {
+			case 0:
+				return A2(
+					$author$project$Update$handleAchievements,
+					$author$project$Update$Sound('click'),
+					A2($author$project$Update$updateStoreModel, $author$project$Msg$Clickpoop, model));
+			case 3:
+				var key = msg.a;
+				return ((key === 'k') || (key === 'x')) ? $author$project$Update$withNoCmd(
+					A2(
+						$author$project$Update$updateStoreModel,
+						$author$project$Msg$KeyPressed(key),
+						model)) : _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			case 2:
+				var time = msg.a;
+				return A2(
+					$author$project$Update$step,
+					$author$project$Update$handleGameCompletion,
+					A2(
+						$author$project$Update$handleAchievements,
+						$author$project$Update$None,
+						A2(
+							$author$project$Update$updateNotification,
+							1.0 / $author$project$Model$config.ck,
+							A2(
+								$author$project$Update$updateStoreModel,
+								$author$project$Msg$Tick(time),
+								model))));
+			case 7:
+				return $author$project$Update$withSaveCmd(model);
+			case 1:
+				var id = msg.a;
+				return A2(
+					$author$project$Update$handleAchievements,
+					$author$project$Update$Sound('store'),
+					A2(
+						$author$project$Update$updateStoreModel,
+						$author$project$Msg$BuyItem(id),
+						model));
+			case 4:
+				var achievement = msg.a;
+				return $author$project$Update$withNoCmd(
+					A2(
+						$author$project$Update$updateAchievementModel,
+						$author$project$Msg$Hover(achievement),
+						model));
+			case 5:
+				return $author$project$Update$withNoCmd(
+					A2($author$project$Update$updateAchievementModel, $author$project$Msg$Unhover, model));
+			case 6:
+				var maybeModelString = msg.a;
+				return $author$project$Update$withNoCmd(
+					$author$project$Update$decodeModel(maybeModelString));
+			case 8:
+				return $author$project$Update$withNoCmd(
+					_Utils_update(
 						model,
-						{bq: updatedStoreModel});
-					var achMsg = $author$project$Update$getAchMsg(updatedStoreModel);
-					var _v1 = A2($author$project$Update$update, achMsg, updatedModel);
-					var newModel = _v1.a;
-					var newMsg = _v1.b;
-					return _Utils_eq(newMsg, $elm$core$Platform$Cmd$none) ? _Utils_Tuple2(
-						newModel,
-						$author$project$Assets$playSound('click')) : _Utils_Tuple2(
-						newModel,
-						$author$project$Assets$playSound('clickAch'));
-				case 3:
-					var key = msg.a;
-					if ((key === 'k') || (key === 'x')) {
-						var updatedStoreModel = A2(
-							$author$project$Domain$Store$Update$updateStore,
-							$author$project$Msg$KeyPressed(key),
-							model.bq);
-						var updatedModel = _Utils_update(
-							model,
-							{bq: updatedStoreModel});
-						return _Utils_Tuple2(updatedModel, $elm$core$Platform$Cmd$none);
-					} else {
-						return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
-					}
-				case 2:
-					var i = msg.a;
-					var updatedStoreModel = A2(
-						$author$project$Domain$Store$Update$updateStore,
-						$author$project$Msg$Tick(i),
-						model.bq);
-					var gameDoneMsg = 'Congratulations! You finished the game :). Thanks for playing!';
-					var dt = 1.0 / $author$project$Model$config.bZ;
-					var updatedNotification = A2($author$project$Domain$Notification$Utils$tickMaybeNotification, dt, model.a9);
-					var updatedModel = _Utils_update(
+						{aL: 1}));
+			case 9:
+				return $author$project$Update$withNoCmd(
+					_Utils_update(
 						model,
-						{a9: updatedNotification, bq: updatedStoreModel});
-					var allDone = A2($author$project$Domain$Achievement$Utils$checkAllDone, model.aF.aG, model.bq.be);
-					var achMsg = $author$project$Update$getAchMsg(updatedStoreModel);
-					var finalMsg = (_Utils_eq(updatedNotification, $elm$core$Maybe$Nothing) && allDone) ? $author$project$Msg$AddNotification(
-						_Utils_Tuple2(gameDoneMsg, (3600 * 24) * 365)) : achMsg;
-					var $temp$msg = finalMsg,
-						$temp$model = updatedModel;
-					msg = $temp$msg;
-					model = $temp$model;
-					continue update;
-				case 1:
-					var id = msg.a;
-					var updatedStoreModel = A2($author$project$Domain$Store$Utils$buyItem, id, model.bq);
-					var updatedModel = _Utils_update(
-						model,
-						{bq: updatedStoreModel});
-					var achMsg = $author$project$Update$getAchMsg(updatedStoreModel);
-					var _v2 = A2($author$project$Update$update, achMsg, updatedModel);
-					var newModel = _v2.a;
-					var newMsg = _v2.b;
-					return _Utils_eq(newMsg, $elm$core$Platform$Cmd$none) ? _Utils_Tuple2(
-						newModel,
-						$author$project$Assets$playSound('store')) : _Utils_Tuple2(
-						newModel,
-						$author$project$Assets$playSound('storeAch'));
-				case 4:
-					var ach = msg.a;
-					var updatedAchievementModel = A2(
-						$author$project$Domain$Achievement$Update$updateAchievements,
-						$author$project$Msg$Hover(ach),
-						model.aF);
-					var updatedModel = _Utils_update(
-						model,
-						{aF: updatedAchievementModel});
-					return _Utils_Tuple2(updatedModel, $elm$core$Platform$Cmd$none);
-				case 5:
-					var updatedAchievementModel = A2($author$project$Domain$Achievement$Update$updateAchievements, $author$project$Msg$Unhover, model.aF);
-					var updatedModel = _Utils_update(
-						model,
-						{aF: updatedAchievementModel});
-					return _Utils_Tuple2(updatedModel, $elm$core$Platform$Cmd$none);
-				case 6:
-					var _v3 = msg.a;
-					var totalpoop = _v3.a;
-					var items = _v3.b;
-					var unlocks = A3($author$project$Domain$Achievement$Utils$computeNewUnlocks, totalpoop, items, model.aF.aG);
-					var updatedAchievementModel = A2($author$project$Domain$Achievement$Utils$applyUnlocks, unlocks, model.aF);
-					var updatedModel = _Utils_update(
-						model,
-						{aF: updatedAchievementModel});
-					var maybeNewAchievement = $author$project$Update$maybeLastElem(unlocks);
-					if (!maybeNewAchievement.$) {
-						var ach = maybeNewAchievement.a;
-						var message = 'Achievement: \'' + (ach.d + '\'');
-						var $temp$msg = $author$project$Msg$AddNotification(
-							_Utils_Tuple2(message, 4.0)),
-							$temp$model = updatedModel;
-						msg = $temp$msg;
-						model = $temp$model;
-						continue update;
-					} else {
-						return _Utils_Tuple2(updatedModel, $elm$core$Platform$Cmd$none);
-					}
-				default:
-					var _v5 = msg.a;
-					var message = _v5.a;
-					var duration = _v5.b;
-					var note = A2($author$project$Domain$Notification$Model$Notification, message, duration);
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{
-								a9: $elm$core$Maybe$Just(note)
-							}),
-						$author$project$Assets$playSound('achievement'));
-			}
+						{aL: 0}));
+			default:
+				return A2(
+					$author$project$Update$withCmd,
+					$author$project$Storage$clear(0),
+					$author$project$Model$modelInit(0));
 		}
 	});
 var $elm$html$Html$Attributes$stringProperty = F2(
@@ -6734,9 +7418,11 @@ var $author$project$View$globalStyles = A3(
 	_List_Nil,
 	_List_fromArray(
 		[
-			$elm$html$Html$text('\n        .app-container { max-width: 1100px; margin: 0 auto; }\n        .grid-layout { display: grid; grid-template-columns: 360px 1fr; gap: 24px; }\n        .panel { background: #0b1220; padding: 24px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }\n        .btn-buy { background: linear-gradient(90deg, #f59e0b, #f97316); border: none; padding: 8px 16px; border-radius: 6px; color: #061421; font-weight: bold; cursor: pointer; transition: transform 0.1s; }\n        .btn-buy:active:not([disabled]) { transform: scale(0.95); }\n        .btn-buy:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }\n        \n        /* poop Animation */\n        .poop-btn { transition: transform 0.05s; user-select: none; cursor: pointer; display: block; margin: 0 auto; border-radius: 50%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }\n        .poop-btn:active { transform: scale(0.94); }\n        \n        /* Animations for Notifications */\n        @keyframes slideIn {\n            from { transform: translateX(100%); opacity: 0; }\n            to { transform: translateX(0); opacity: 1; }\n        }\n        .notification-toast {\n            animation: slideIn 0.3s ease-out forwards;\n        }\n\n        @media (max-width: 800px) {\n            .grid-layout { grid-template-columns: 1fr; }\n        }\n    ')
+			$elm$html$Html$text('\n        .app-container { max-width: 1100px; margin: 0 auto; }\n        .grid-layout { display: grid; grid-template-columns: 360px 1fr; gap: 24px; }\n        .panel { background: #0b1220; padding: 24px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }\n        .btn-buy { background: linear-gradient(90deg, #f59e0b, #f97316); border: none; padding: 8px 16px; border-radius: 6px; color: #061421; font-weight: bold; cursor: pointer; transition: transform 0.1s; }\n        .btn-buy:active:not([disabled]) { transform: scale(0.95); }\n        .btn-buy:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }\n        \n        /* poop Animation */\n        .poop-btn { transition: transform 0.05s; user-select: none; cursor: pointer; display: block; margin: 0 auto; border-radius: 50%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }\n        .poop-btn:active { transform: scale(0.94); }\n        \n        /* Animations for Notifications */\n        @keyframes slideIn {\n            from { transform: translateX(100%); opacity: 0; }\n            to { transform: translateX(0); opacity: 1; }\n        }\n        .notification-toast {\n            animation: slideIn 0.3s ease-out forwards;\n        }\n\n        @media (max-width: 800px) {\n            .grid-layout { grid-template-columns: 1fr; }\n        }\n        .btn-reset { \n            background: transparent; \n            border: 1px solid #ff4444; \n            color: #ff4444; \n            padding: 6px 12px; \n            border-radius: 4px; \n            cursor: pointer; \n            font-size: 12px; \n            transition: all 0.2s;\n            opacity: 0.7;\n        }\n        .btn-reset:hover { \n            background: #ff4444; \n            color: white; \n            opacity: 1;\n        }\n    ')
 		]));
+var $author$project$Msg$RequestReset = {$: 8};
 var $elm$html$Html$a = _VirtualDom_node('a');
+var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$header = _VirtualDom_node('header');
 var $elm$html$Html$Attributes$href = function (url) {
@@ -6746,6 +7432,23 @@ var $elm$html$Html$Attributes$href = function (url) {
 		_VirtualDom_noJavaScriptUri(url));
 };
 var $elm$html$Html$i = _VirtualDom_node('i');
+var $elm$virtual_dom$VirtualDom$Normal = function (a) {
+	return {$: 0, a: a};
+};
+var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
+var $elm$html$Html$Events$on = F2(
+	function (event, decoder) {
+		return A2(
+			$elm$virtual_dom$VirtualDom$on,
+			event,
+			$elm$virtual_dom$VirtualDom$Normal(decoder));
+	});
+var $elm$html$Html$Events$onClick = function (msg) {
+	return A2(
+		$elm$html$Html$Events$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$html$Html$Attributes$target = $elm$html$Html$Attributes$stringProperty('target');
@@ -6775,11 +7478,23 @@ var $author$project$View$headerView = A2(
 			$elm$html$Html$div,
 			_List_fromArray(
 				[
-					A2($elm$html$Html$Attributes$style, 'font-size', '14px'),
-					A2($elm$html$Html$Attributes$style, 'text-align', 'center')
+					A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+					A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
+					A2($elm$html$Html$Attributes$style, 'gap', '20px')
 				]),
 			_List_fromArray(
 				[
+					A2(
+					$elm$html$Html$button,
+					_List_fromArray(
+						[
+							$elm$html$Html$Attributes$class('btn-reset'),
+							$elm$html$Html$Events$onClick($author$project$Msg$RequestReset)
+						]),
+					_List_fromArray(
+						[
+							$elm$html$Html$text('Reset Save')
+						])),
 					A2(
 					$elm$html$Html$a,
 					_List_fromArray(
@@ -6819,15 +7534,15 @@ var $author$project$Assets$poopUrl = function (tier) {
 	var text = A2(
 		$elm$core$String$join,
 		'\\n',
-		A2($elm$core$String$split, ' ', tier.m));
-	return 'https://placehold.co/200x200/' + (tier.l + ('/FFF?text=' + text));
+		A2($elm$core$String$split, ' ', tier.n));
+	return 'https://placehold.co/200x200/' + (tier.m + ('/FFF?text=' + text));
 };
 var $author$project$Assets$getPoopImage = function (pps) {
 	var best = A3(
 		$elm$core$List$foldl,
 		F2(
 			function (t, acc) {
-				return (_Utils_cmp(pps, t.o) > -1) ? $elm$core$Maybe$Just(t) : acc;
+				return (_Utils_cmp(pps, t.p) > -1) ? $elm$core$Maybe$Just(t) : acc;
 			}),
 		$elm$core$Maybe$Nothing,
 		$author$project$Assets$tiers);
@@ -6838,7 +7553,7 @@ var $author$project$Assets$getPoopImage = function (pps) {
 		return $author$project$Assets$poopUrl(
 			A2(
 				$elm$core$Maybe$withDefault,
-				{l: '8B4513', m: 'little poop man', o: 0},
+				{m: '8B4513', n: 'little poop man', p: 0},
 				$elm$core$List$head($author$project$Assets$tiers)));
 	}
 };
@@ -6856,7 +7571,7 @@ var $author$project$Domain$Achievement$Utils$kindToString = function (kind) {
 			case 2:
 				var _v3 = kind.a;
 				return '04Farm';
-			case 3:
+			case 4:
 				var _v4 = kind.a;
 				return '06Factory';
 			default:
@@ -7266,23 +7981,6 @@ var $author$project$Domain$Achievement$Utils$groupAchievements = function (achie
 };
 var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$html$Html$img = _VirtualDom_node('img');
-var $elm$virtual_dom$VirtualDom$Normal = function (a) {
-	return {$: 0, a: a};
-};
-var $elm$virtual_dom$VirtualDom$on = _VirtualDom_on;
-var $elm$html$Html$Events$on = F2(
-	function (event, decoder) {
-		return A2(
-			$elm$virtual_dom$VirtualDom$on,
-			event,
-			$elm$virtual_dom$VirtualDom$Normal(decoder));
-	});
-var $elm$html$Html$Events$onClick = function (msg) {
-	return A2(
-		$elm$html$Html$Events$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
 var $elm$html$Html$Attributes$src = function (url) {
 	return A2(
 		$elm$html$Html$Attributes$stringProperty,
@@ -7337,7 +8035,7 @@ var $author$project$Domain$Achievement$View$achievementBoxStyle = function (unlo
 			A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
 			A2($elm$html$Html$Attributes$style, 'cursor', 'pointer'),
 			A2($elm$html$Html$Attributes$style, 'border-radius', '4px'),
-			A2($elm$html$Html$Attributes$style, 'background', $author$project$Model$config.bD),
+			A2($elm$html$Html$Attributes$style, 'background', $author$project$Model$config.bZ),
 			A2(
 			$elm$html$Html$Attributes$style,
 			'opacity',
@@ -7420,7 +8118,7 @@ var $author$project$Domain$Achievement$View$trophyIcon = function (ach) {
 var $author$project$Domain$Achievement$View$viewAchievement = F2(
 	function (model, ach) {
 		var isHovered = _Utils_eq(
-			model.aZ,
+			model.aG,
 			$elm$core$Maybe$Just(ach));
 		return A2(
 			$elm$html$Html$div,
@@ -7475,7 +8173,7 @@ var $author$project$View$leftPanelView = F2(
 					_List_fromArray(
 						[
 							$elm$html$Html$Attributes$src(
-							$author$project$Assets$getPoopImage(storeModel.be)),
+							$author$project$Assets$getPoopImage(storeModel.aQ)),
 							$elm$html$Html$Attributes$class('poop-btn'),
 							A2($elm$html$Html$Attributes$style, 'width', '200px'),
 							A2($elm$html$Html$Attributes$style, 'height', '200px'),
@@ -7501,11 +8199,11 @@ var $author$project$View$leftPanelView = F2(
 							$author$project$UI$StatBox$statBox,
 							'poop',
 							$elm$core$String$fromInt(
-								$elm$core$Basics$floor(storeModel.bd))),
+								$elm$core$Basics$floor(storeModel.aP))),
 							A2(
 							$author$project$UI$StatBox$statBox,
 							'Per Second',
-							$author$project$Domain$Store$View$formatPps(storeModel.be))
+							$author$project$Domain$Store$View$formatPps(storeModel.aQ))
 						])),
 					A2(
 					$elm$html$Html$div,
@@ -7539,7 +8237,7 @@ var $author$project$View$leftPanelView = F2(
 							A2(
 								$elm$core$List$map,
 								$author$project$View$viewColumn(achievementModel),
-								$author$project$Domain$Achievement$Utils$groupAchievements(achievementModel.aG)))
+								$author$project$Domain$Achievement$Utils$groupAchievements(achievementModel.ay)))
 						]))
 				]));
 	});
@@ -7583,7 +8281,7 @@ var $author$project$Domain$Notification$View$maybeViewNotification = function (n
 						]),
 					_List_fromArray(
 						[
-							$elm$html$Html$text(note.b6)
+							$elm$html$Html$text(note.bp)
 						]))
 				]));
 	} else {
@@ -7628,11 +8326,6 @@ var $author$project$Domain$Notification$View$maybeViewNotification = function (n
 				]));
 	}
 };
-var $author$project$Msg$BuyItem = function (a) {
-	return {$: 1, a: a};
-};
-var $elm$html$Html$button = _VirtualDom_node('button');
-var $elm$json$Json$Encode$bool = _Json_wrap;
 var $elm$html$Html$Attributes$boolProperty = F2(
 	function (key, bool) {
 		return A2(
@@ -7646,9 +8339,9 @@ var $author$project$Domain$Store$View$viewStoreItem = F2(
 	function (poop, item) {
 		var cost = $author$project$Domain$Store$Utils$calculateCost(item);
 		var canAfford = _Utils_cmp(poop, cost) > -1;
-		var _v0 = $author$project$Domain$Store$Model$itemMeta(item.b_);
+		var _v0 = $author$project$Domain$Store$Item$itemMeta(item.cl);
+		var image = _v0.bj;
 		var name = _v0.d;
-		var image = _v0.a_;
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -7710,7 +8403,7 @@ var $author$project$Domain$Store$View$viewStoreItem = F2(
 											_List_fromArray(
 												[
 													$elm$html$Html$text(
-													'x' + $elm$core$String$fromInt(item.cl))
+													'x' + $elm$core$String$fromInt(item.cH))
 												]))
 										])),
 									A2(
@@ -7736,7 +8429,7 @@ var $author$project$Domain$Store$View$viewStoreItem = F2(
 									_List_fromArray(
 										[
 											$elm$html$Html$text(
-											'+' + ($author$project$Domain$Store$View$formatPps(item.X) + ' pps'))
+											'+' + ($author$project$Domain$Store$View$formatPps(item.S) + ' pps'))
 										]))
 								]))
 						])),
@@ -7770,7 +8463,7 @@ var $author$project$Domain$Store$View$viewStoreItem = F2(
 								[
 									$elm$html$Html$Attributes$class('btn-buy'),
 									$elm$html$Html$Events$onClick(
-									$author$project$Msg$BuyItem(item.b_)),
+									$author$project$Msg$BuyItem(item.cl)),
 									$elm$html$Html$Attributes$disabled(!canAfford)
 								]),
 							_List_fromArray(
@@ -7792,7 +8485,7 @@ var $author$project$View$rightPanelView = function (model) {
 			]),
 		_List_fromArray(
 			[
-				$author$project$Domain$Notification$View$maybeViewNotification(model.a9),
+				$author$project$Domain$Notification$View$maybeViewNotification(model.aN),
 				A2(
 				$elm$html$Html$h2,
 				_List_fromArray(
@@ -7816,9 +8509,110 @@ var $author$project$View$rightPanelView = function (model) {
 					]),
 				A2(
 					$elm$core$List$map,
-					$author$project$Domain$Store$View$viewStoreItem(model.bq.bd),
-					model.bq.a0))
+					$author$project$Domain$Store$View$viewStoreItem(model.aX.aP),
+					model.aX.aI))
 			]));
+};
+var $author$project$Msg$CancelReset = {$: 9};
+var $author$project$Msg$ConfirmReset = {$: 10};
+var $elm$html$Html$p = _VirtualDom_node('p');
+var $author$project$View$viewModal = function (model) {
+	var _v0 = model.aL;
+	if (!_v0) {
+		return $elm$html$Html$text('');
+	} else {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					A2($elm$html$Html$Attributes$style, 'position', 'fixed'),
+					A2($elm$html$Html$Attributes$style, 'top', '0'),
+					A2($elm$html$Html$Attributes$style, 'left', '0'),
+					A2($elm$html$Html$Attributes$style, 'right', '0'),
+					A2($elm$html$Html$Attributes$style, 'bottom', '0'),
+					A2($elm$html$Html$Attributes$style, 'background', 'rgba(0,0,0,0.8)'),
+					A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+					A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
+					A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
+					A2($elm$html$Html$Attributes$style, 'z-index', '100')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$div,
+					_List_fromArray(
+						[
+							A2($elm$html$Html$Attributes$style, 'background', $author$project$Model$config.b7),
+							A2($elm$html$Html$Attributes$style, 'padding', '24px'),
+							A2($elm$html$Html$Attributes$style, 'border-radius', '12px'),
+							A2($elm$html$Html$Attributes$style, 'max-width', '300px'),
+							A2($elm$html$Html$Attributes$style, 'text-align', 'center'),
+							A2($elm$html$Html$Attributes$style, 'border', '1px solid #334155')
+						]),
+					_List_fromArray(
+						[
+							A2(
+							$elm$html$Html$h3,
+							_List_fromArray(
+								[
+									A2($elm$html$Html$Attributes$style, 'margin-top', '0')
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text('Wipe Save?')
+								])),
+							A2(
+							$elm$html$Html$p,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$elm$html$Html$text('This will delete all your progress. Are you sure?')
+								])),
+							A2(
+							$elm$html$Html$div,
+							_List_fromArray(
+								[
+									A2($elm$html$Html$Attributes$style, 'display', 'flex'),
+									A2($elm$html$Html$Attributes$style, 'gap', '12px'),
+									A2($elm$html$Html$Attributes$style, 'justify-content', 'center'),
+									A2($elm$html$Html$Attributes$style, 'margin-top', '20px')
+								]),
+							_List_fromArray(
+								[
+									A2(
+									$elm$html$Html$button,
+									_List_fromArray(
+										[
+											$elm$html$Html$Events$onClick($author$project$Msg$CancelReset),
+											A2($elm$html$Html$Attributes$style, 'padding', '8px 16px'),
+											A2($elm$html$Html$Attributes$style, 'border-radius', '6px'),
+											A2($elm$html$Html$Attributes$style, 'border', 'none'),
+											A2($elm$html$Html$Attributes$style, 'cursor', 'pointer')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Cancel')
+										])),
+									A2(
+									$elm$html$Html$button,
+									_List_fromArray(
+										[
+											$elm$html$Html$Events$onClick($author$project$Msg$ConfirmReset),
+											A2($elm$html$Html$Attributes$style, 'background', '#ef4444'),
+											A2($elm$html$Html$Attributes$style, 'color', 'white'),
+											A2($elm$html$Html$Attributes$style, 'padding', '8px 16px'),
+											A2($elm$html$Html$Attributes$style, 'border-radius', '6px'),
+											A2($elm$html$Html$Attributes$style, 'border', 'none'),
+											A2($elm$html$Html$Attributes$style, 'cursor', 'pointer')
+										]),
+									_List_fromArray(
+										[
+											$elm$html$Html$text('Wipe it')
+										]))
+								]))
+						]))
+				]));
+	}
 };
 var $author$project$View$view = function (model) {
 	return A2(
@@ -7826,7 +8620,7 @@ var $author$project$View$view = function (model) {
 		_List_fromArray(
 			[
 				A2($elm$html$Html$Attributes$style, 'min-height', '80vh'),
-				A2($elm$html$Html$Attributes$style, 'background', $author$project$Model$config.bI),
+				A2($elm$html$Html$Attributes$style, 'background', $author$project$Model$config.b3),
 				A2($elm$html$Html$Attributes$style, 'color', '#e6eef8'),
 				A2($elm$html$Html$Attributes$style, 'font-family', 'system-ui, sans-serif'),
 				A2($elm$html$Html$Attributes$style, 'padding', '24px'),
@@ -7852,13 +8646,14 @@ var $author$project$View$view = function (model) {
 							]),
 						_List_fromArray(
 							[
-								A2($author$project$View$leftPanelView, model.bq, model.aF),
+								A2($author$project$View$leftPanelView, model.aX, model.ax),
 								$author$project$View$rightPanelView(model)
 							]))
-					]))
+					])),
+				$author$project$View$viewModal(model)
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{b1: $author$project$Main$init, cr: $author$project$Main$subscriptions, cw: $author$project$Update$update, cx: $author$project$View$view});
+	{co: $author$project$Main$init, cR: $author$project$Main$subscriptions, cX: $author$project$Update$update, cY: $author$project$View$view});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));

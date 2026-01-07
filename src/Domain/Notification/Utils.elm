@@ -1,8 +1,8 @@
 module Domain.Notification.Utils exposing (..)
 
-import Domain.Notification.Model exposing (Notification)
+import Domain.Notification.Model as Notification
 
-tickNotification : Float -> Notification -> Maybe Notification
+tickNotification : Float -> Notification.Model -> Maybe Notification.Model
 tickNotification deltaTime notification =
     let
         newLife = notification.life - deltaTime
@@ -12,7 +12,7 @@ tickNotification deltaTime notification =
     else
         Nothing
 
-tickMaybeNotification : Float -> Maybe Notification -> Maybe Notification
+tickMaybeNotification : Float -> Maybe Notification.Model -> Maybe Notification.Model
 tickMaybeNotification deltaTime maybeNotification =
     maybeNotification
         |> Maybe.andThen (tickNotification deltaTime)

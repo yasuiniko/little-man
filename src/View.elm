@@ -1,11 +1,10 @@
 module View exposing (..)
 
 import Msg exposing (Msg(..))
-import Model exposing (Model, config)
+import Model exposing (Model, config, ModalState(..))
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
-
 import Domain.Notification.View exposing (maybeViewNotification)
 import Domain.Store.View exposing (viewStoreItem)
 import Domain.Store.Model as Store
@@ -35,6 +34,7 @@ view model =
                 , rightPanelView model
                 ]
             ]
+        , viewModal model
         ]
 
 globalStyles : Html Msg
@@ -65,30 +65,89 @@ globalStyles =
         @media (max-width: 800px) {
             .grid-layout { grid-template-columns: 1fr; }
         }
+        .btn-reset { 
+            background: transparent; 
+            border: 1px solid #ff4444; 
+            color: #ff4444; 
+            padding: 6px 12px; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 12px; 
+            transition: all 0.2s;
+            opacity: 0.7;
+        }
+        .btn-reset:hover { 
+            background: #ff4444; 
+            color: white; 
+            opacity: 1;
+        }
     """
         ]
-
 
 headerView : Html Msg
 headerView =
     header [ style "margin-bottom" "24px", style "display" "flex", style "justify-content" "space-between", style "align-items" "center" ]
         [ h1 [ style "margin" "0", style "font-size" "24px" ] [ text "Squeeze Him" ]
-        , div [ style "font-size" "14px", style "text-align" "center" ] 
-    [ a [ href "https://github.com/yasuiniko/little-man"
-        , target "_blank"
-        , style "text-decoration" "none"
-        , style "color" "inherit" 
-        , style "display" "inline-flex"
-        , style "flex-direction" "column"
-        , style "align-items" "center"
-        , style "gap" "5px"
-        ] 
-        [ i [ class "fa-brands fa-github", style "font-size" "24px" ] []
-        ]
-    ]
+        , div [ style "display" "flex", style "align-items" "center", style "gap" "20px" ] 
+            [
+              button 
+                [ class "btn-reset"
+                , onClick RequestReset
+                ] 
+                [ text "Reset Save" ]
+            , a 
+                [ href "https://github.com/yasuiniko/little-man"
+                , target "_blank"
+                , style "text-decoration" "none"
+                , style "color" "inherit" 
+                , style "display" "inline-flex"
+                , style "flex-direction" "column"
+                , style "align-items" "center"
+                , style "gap" "5px"
+                ] 
+                [ i [ class "fa-brands fa-github", style "font-size" "24px" ] [] ]
+            ]
         ]
 
-
+viewModal : Model -> Html Msg
+viewModal model =
+    case model.modalState of
+        NoModal -> 
+            text ""
+            
+        ConfirmingReset ->
+            div 
+                [ style "position" "fixed"
+                , style "top" "0", style "left" "0", style "right" "0", style "bottom" "0"
+                , style "background" "rgba(0,0,0,0.8)"
+                , style "display" "flex", style "align-items" "center", style "justify-content" "center"
+                , style "z-index" "100"
+                ]
+                [ div 
+                    [ style "background" config.cardBg
+                    , style "padding" "24px"
+                    , style "border-radius" "12px"
+                    , style "max-width" "300px"
+                    , style "text-align" "center"
+                    , style "border" "1px solid #334155"
+                    ]
+                    [ h3 [ style "margin-top" "0" ] [ text "Wipe Save?" ]
+                    , p [] [ text "This will delete all your progress. Are you sure?" ]
+                    , div [ style "display" "flex", style "gap" "12px", style "justify-content" "center", style "margin-top" "20px" ]
+                        [ button 
+                            [ onClick CancelReset
+                            , style "padding" "8px 16px", style "border-radius" "6px", style "border" "none", style "cursor" "pointer" 
+                            ] 
+                            [ text "Cancel" ]
+                        , button 
+                            [ onClick ConfirmReset
+                            , style "background" "#ef4444", style "color" "white"
+                            , style "padding" "8px 16px", style "border-radius" "6px", style "border" "none", style "cursor" "pointer" 
+                            ] 
+                            [ text "Wipe it" ]
+                        ]
+                    ]
+                ]
 leftPanelView : Store.Model -> Achievement.Model -> Html Msg
 leftPanelView storeModel achievementModel =
     div [ class "panel", style "text-align" "center", style "display" "flex", style "flex-direction" "column", style "gap" "24px" ]

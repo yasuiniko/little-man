@@ -1,27 +1,12 @@
 module Domain.Notification.View exposing (..)
 
 import Msg exposing (Msg(..))
-import Domain.Notification.Model exposing (Notification)
+import Domain.Notification.Model exposing (Model)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
 
--- viewNotificatios : Model -> Html Msg
--- viewNotifications model =
---     div
---         [ style "position" "fixed"
---         , style "bottom" "24px"
---         , style "right" "24px"
---         , style "display" "flex"
---         , style "flex-direction" "column"
---         , style "gap" "12px"
---         , style "pointer-events" "none" -- Allows clicking through the empty area
---         , style "z-index" "1000"
---         ]
---         (List.map viewSingleNotification model.notifications)
-
-
-maybeViewNotification : Maybe Notification -> Html Msg
+maybeViewNotification : Maybe Model -> Html Msg
 maybeViewNotification notification =
     case notification of
         Just note -> 

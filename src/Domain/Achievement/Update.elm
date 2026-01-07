@@ -6,8 +6,6 @@ import Domain.Achievement.Model exposing (Model)
 updateAchievements : Msg -> Model -> Model
 updateAchievements msg model = 
     case msg of
-        CheckAchievements _ -> 
-            model
         Hover ach ->
             let 
                 modelWithHover =
@@ -20,6 +18,8 @@ updateAchievements msg model =
                 modelWithoutHover = { model | hoveredAchievement = Nothing }
             in
             modelWithoutHover
+        AutoSave ->
+            model
         Clickpoop ->
             model
         Tick _ ->
@@ -28,7 +28,13 @@ updateAchievements msg model =
             model
         KeyPressed _ -> 
             model
-        AddNotification _ ->
+        LoadedGame _ ->
+            model
+        RequestReset -> 
+            model
+        CancelReset -> 
+            model
+        ConfirmReset -> 
             model
 
 

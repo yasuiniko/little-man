@@ -1,122 +1,161 @@
 module Update exposing (..)
 
 import Msg exposing (Msg(..))
-import Model exposing (Model, config)
+import Model exposing (Model, config, ModalState(..), modelCodec, modelInit)
 import Assets exposing (playSound)
+import Storage 
 import Domain.Achievement.Update exposing (updateAchievements)
 import Domain.Achievement.Utils exposing (computeNewUnlocks, applyUnlocks)
-import Domain.Notification.Model exposing (Notification)
+import Domain.Notification.Model as Notification
 import Domain.Notification.Utils exposing (tickMaybeNotification)
-import Domain.Store.Utils exposing (buyItem)
 import Domain.Store.Update exposing (updateStore)
-import Domain.Store.Model as Store
 import Domain.Achievement.Utils exposing (checkAllDone)
 
-getAchMsg: Store.Model -> Msg
-getAchMsg storeModel = CheckAchievements (storeModel.totalpoop, storeModel.items)
+import Codec exposing (Codec, Error)
 
-maybeLastElem : List a -> Maybe a         
-maybeLastElem =            
-    List.foldl (Just >> always) Nothing
+
+type Context = Sound String | None
 
 update : Msg -> Model -> ( Model, Cmd msg )
 update msg model =
     case msg of
         Clickpoop ->
-            let
-                updatedStoreModel = updateStore Clickpoop model.storeModel
-                updatedModel = { model | storeModel = updatedStoreModel}
-
-                achMsg = getAchMsg updatedStoreModel
-                ( newModel, newMsg )  = update achMsg updatedModel
-            in
-            if newMsg == Cmd.none then
-                ( newModel, playSound "click" )
-            else
-                ( newModel, playSound "clickAch")
+            model
+                |> updateStoreModel Clickpoop
+                |> handleAchievements (Sound "click")
 
         KeyPressed key ->
             if key == "k" || key == "x" then
-                let
-                    updatedStoreModel = updateStore (KeyPressed key) model.storeModel 
-                    updatedModel = { model | storeModel = updatedStoreModel }  
-                in
-                ( updatedModel, Cmd.none )
+                model
+                    |> updateStoreModel (KeyPressed key)
+                    |> withNoCmd
             else
                 ( model, Cmd.none )
 
-        Tick i ->
-            let
-                updatedStoreModel = updateStore (Tick i) model.storeModel
-
-                -- Update Notifications (decrease life, remove old ones)
-                dt =
-                    1.0 / config.hz
-                    
-                updatedNotification = tickMaybeNotification dt model.notification
-
-                updatedModel =
-                    { model | notification = updatedNotification, storeModel = updatedStoreModel}
-                achMsg = getAchMsg updatedStoreModel
-                
-                allDone = checkAllDone model.achievementModel.achievements model.storeModel.poopPerSecond
-                gameDoneMsg = "Congratulations! You finished the game :). Thanks for playing!"
-
-                finalMsg =
-                    if updatedNotification == Nothing && allDone then
-                        AddNotification ( gameDoneMsg, 3600*24*365 )
-                    else
-                        achMsg
-            in
-            update finalMsg updatedModel
-                    
+        Tick time ->
+            model
+                |> updateStoreModel (Tick time)
+                |> updateNotification (1.0 / config.hz) 
+                |> handleAchievements None
+                |> step handleGameCompletion
+        
+        AutoSave ->
+            model |> withSaveCmd
 
         BuyItem id ->
-            let
-                updatedStoreModel = buyItem id model.storeModel
-                updatedModel = { model | storeModel = updatedStoreModel }
-                achMsg = getAchMsg updatedStoreModel
-                ( newModel, newMsg ) = update achMsg updatedModel
-            in
-            if newMsg == Cmd.none then
-                ( newModel, playSound "store" )
-            else
-                ( newModel, playSound "storeAch")
+            model 
+                |> updateStoreModel (BuyItem id)
+                |> handleAchievements (Sound "store")
             
-        Hover ach ->
-            let
-                updatedAchievementModel = updateAchievements (Hover ach) model.achievementModel
-
-                updatedModel = { model | achievementModel = updatedAchievementModel}
-            in 
-            ( updatedModel, Cmd.none)
+        Hover achievement -> 
+            model 
+                |> updateAchievementModel (Hover achievement)
+                |> withNoCmd
 
         Unhover ->
-            let
-                updatedAchievementModel = updateAchievements Unhover model.achievementModel
+            model
+                |> updateAchievementModel Unhover
+                |> withNoCmd
+        LoadedGame maybeModelString ->
+            decodeModel maybeModelString
+                |> withNoCmd
+        RequestReset -> 
+            { model | modalState = ConfirmingReset }
+                |> withNoCmd
+        CancelReset -> 
+            { model | modalState = NoModal }
+                |> withNoCmd
+        ConfirmReset -> 
+            modelInit ()
+                |> withCmd ( Storage.clear () )
 
-                updatedModel = { model | achievementModel = updatedAchievementModel}
-            in 
-            ( updatedModel, Cmd.none)
-        CheckAchievements (totalpoop, items) ->
-            let
-                unlocks = computeNewUnlocks totalpoop items model.achievementModel.achievements              
-                updatedAchievementModel = applyUnlocks unlocks model.achievementModel
+maybeLast : List a -> Maybe a         
+maybeLast =            
+    List.foldl (Just >> always) Nothing
 
-                updatedModel = { model | achievementModel = updatedAchievementModel }
+decodeModel : Maybe String -> Model
+decodeModel maybeString =
+    maybeString
+        |> Maybe.andThen (Codec.decodeString modelCodec >> Result.toMaybe)
+        |> Maybe.withDefault (modelInit ())
 
-                maybeNewAchievement = maybeLastElem unlocks
-            in 
-            case maybeNewAchievement of
-                Just ach ->
-                    let
-                        message = "Achievement: '" ++ ach.name ++ "'" 
-                    in
-                    update (AddNotification (message, 4.0)) updatedModel
-                Nothing ->
-                    ( updatedModel, Cmd.none )
-        AddNotification ( message, duration ) ->
+updateAchievementModel : Msg -> Model -> Model
+updateAchievementModel msg model = 
+    { model | achievementModel = updateAchievements msg model.achievementModel} 
+
+updateStoreModel : Msg -> Model -> Model
+updateStoreModel msg model = 
+    { model | storeModel = updateStore msg model.storeModel} 
+
+step : (Model -> ( Model, Cmd msg )) -> ( Model, Cmd msg ) -> ( Model, Cmd msg )
+step fn ( model, accumulatedCmds ) =
+    let
+        ( nextModel, nextCmd ) = fn model
+    in
+    ( nextModel, Cmd.batch [ accumulatedCmds, nextCmd ] )
+
+handleAchievements : Context -> Model -> ( Model, Cmd msg )
+handleAchievements context model =
+    let
+        unlocks =
+            computeNewUnlocks 
+                model.storeModel.totalpoop 
+                model.storeModel.items 
+                model.achievementModel.achievements
+
+        updatedModel =
+            { model | achievementModel = applyUnlocks unlocks model.achievementModel }
+    in
+    case maybeLast unlocks of
+        Just achievement -> 
             let
-                note = Notification message duration
+                message = "Achievement: '" ++ achievement.name ++ "'"
+                sound = 
+                    case context of 
+                        Sound "click" -> 
+                            "clickAch"
+                        Sound "store" -> 
+                            "storeAch"
+                        _ -> "achievement"
             in
-            ( { model | notification = Just note }, playSound "achievement" )
+            addNotification message 4.0 sound updatedModel
+
+        Nothing ->
+            case context of 
+                Sound sound -> 
+                    updatedModel |> withSoundEffect sound 
+                _ -> 
+                    updatedModel |> withNoCmd
+
+addNotification : String -> Float -> String -> Model -> ( Model, Cmd msg )
+addNotification message duration sound model =
+    { model | notification = Just (Notification.Model message duration) }
+        |> withSoundEffect sound
+
+updateNotification : Float -> Model -> Model
+updateNotification dt model = 
+    { model | notification = tickMaybeNotification dt model.notification }
+
+handleGameCompletion : Model -> ( Model, Cmd msg )
+handleGameCompletion model = 
+        if (checkAllDone 
+                model.achievementModel.achievements
+                model.storeModel.poopPerSecond
+            && model.notification == Nothing) then
+            model
+                |> addNotification 
+                    "Congratulations! You finished the game :). Thanks for playing!" 
+                    ( 60 * 925600 )-- one year
+                    "achievement"
+        else
+            model |> withNoCmd
+
+withSoundEffect : String -> Model -> (Model, Cmd msg)
+withSoundEffect sound model =
+    ( model, playSound sound)
+withNoCmd : Model -> ( Model, Cmd msg )
+withNoCmd model = ( model, Cmd.none )
+withCmd : Cmd msg -> Model -> ( Model, Cmd msg )
+withCmd cmd model = ( model, cmd )
+withSaveCmd: Model -> (Model, Cmd msg)
+withSaveCmd model = ( model, Storage.save (Codec.encodeToString 0 modelCodec model) )

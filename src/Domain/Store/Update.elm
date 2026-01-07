@@ -2,9 +2,9 @@ module Domain.Store.Update exposing (..)
 
 import Msg exposing (Msg(..))
 import Domain.Store.Model exposing (Model)
+import Domain.Store.Item exposing (ItemId(..))
 import Domain.Store.Utils exposing (buyItem)
 import Model exposing (config)
-import Domain.Store.Model exposing (ItemId(..))
 
 updateStore : Msg -> Model -> Model
 updateStore msg model = 
@@ -52,10 +52,15 @@ updateStore msg model =
         --         updatedModel = { model | items = updatedItems, poop = max (15 * 1.15^ 65 + 1) model.poop }
         --     in
         --         updateStore (BuyItem Cursor) updatedModel
+        AutoSave -> 
+            model
         KeyPressed _ -> 
             model
-        CheckAchievements _ -> 
+        LoadedGame _ ->
             model
-        AddNotification _ ->
+        RequestReset -> 
             model
-
+        CancelReset -> 
+            model
+        ConfirmReset -> 
+            model

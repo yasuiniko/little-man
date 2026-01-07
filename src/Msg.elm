@@ -1,7 +1,7 @@
 module Msg exposing (..)
 
 import Domain.Achievement.Model exposing (Achievement)
-import Domain.Store.Model exposing (Item, ItemId)
+import Domain.Store.Item exposing (Item, ItemId)
 import Time
 
 
@@ -12,5 +12,8 @@ type Msg
     | KeyPressed String
     | Hover Achievement
     | Unhover
-    | CheckAchievements (Float, List Item)
-    | AddNotification (String, Float)
+    | LoadedGame (Maybe String)
+    | AutoSave
+    | RequestReset
+    | CancelReset
+    | ConfirmReset

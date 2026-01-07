@@ -1,10 +1,24 @@
 module Domain.Achievement.Model exposing (..)
 
-import Domain.Store.Model exposing (ItemId(..))
+import Domain.Store.Item exposing (ItemId(..))
+import Codec exposing (Codec)
+import Domain.Store.Item exposing (itemIdCodec)
 
 type AchievementKind
-    = Totalpoop Float
+    = TotalPoop Float
     | OwnItem ItemId Int
+
+achievementKindCodec: Codec AchievementKind
+achievementKindCodec =
+   Codec.custom
+        (\totalpoop ownitem value ->
+            case value of
+                TotalPoop f -> totalpoop f
+                OwnItem id i -> ownitem id i
+        )
+        |> Codec.variant1 "Totalpoop" TotalPoop Codec.float
+        |> Codec.variant2 "Ownitem" OwnItem itemIdCodec Codec.int
+        |> Codec.buildCustom
 
 type alias Achievement =
     { name : String
@@ -12,10 +26,32 @@ type alias Achievement =
     , unlocked : Bool
     , kind : AchievementKind
     }
+achievementCodec : Codec Achievement
+achievementCodec =
+    Codec.object Achievement
+        |> Codec.field "name" .name Codec.string
+        |> Codec.field "description" .description Codec.string
+        |> Codec.field "unlocked" .unlocked Codec.bool
+        |> Codec.field "kind" .kind achievementKindCodec
+        |> Codec.buildObject
+
 
 type alias Model = 
     { achievements : List Achievement
     , hoveredAchievement : Maybe Achievement
+    }
+
+modelCodec : Codec Model
+modelCodec =
+    Codec.object Model
+        |> Codec.field "achievements" .achievements (Codec.list achievementCodec)
+        |> Codec.optionalMaybeField "hoveredAchievement" .hoveredAchievement (Codec.maybe achievementCodec)
+        |> Codec.buildObject
+
+init : () -> Model
+init _ = 
+    { achievements = initialAchievements
+    , hoveredAchievement = Nothing
     }
 
 initialAchievements : List Achievement
@@ -23,32 +59,32 @@ initialAchievements =
     [ { name = "Up and at 'em"
       , description = "Squeeze him once"
       , unlocked = False
-      , kind = Totalpoop 1
+      , kind = TotalPoop 1
       }
     , { name = "Novice Squisher"
       , description = "Harvest 100 lifetime poop."
       , unlocked = False
-      , kind = Totalpoop 100
+      , kind = TotalPoop 100
       }
     , { name = "Pro Squisher"
       , description = "Harvest 1,000 lifetime poop."
       , unlocked = False
-      , kind = Totalpoop 1000
+      , kind = TotalPoop 1000
       }
     , { name = "Elite Squisher"
       , description = "Harvest 1 million lifetime poop."
       , unlocked = False
-      , kind = Totalpoop 1000000
+      , kind = TotalPoop 1000000
       }
     , { name = "Ultra Squisher"
       , description = "Harvest 1 billion lifetime poop."
       , unlocked = False
-      , kind = Totalpoop 1000000000
+      , kind = TotalPoop 1000000000
       }
     , { name = "French Squisher"
       , description = "Harvest 1 GDP of France."
       , unlocked = False
-      , kind = Totalpoop 3162000000
+      , kind = TotalPoop 3162000000
       }
 
     
@@ -209,9 +245,3 @@ initialAchievements =
       }
     
     ]
-
-init : () -> Model
-init _ = 
-    { achievements = initialAchievements
-    , hoveredAchievement = Nothing
-    }

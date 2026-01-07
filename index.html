@@ -9,8 +9,28 @@
 <body style="background-color:#0b1220">
   <div id="myapp"></div>
     <script>
+    // main app
     var app = Elm.Main.init({ node: document.getElementById('myapp') });
 
+    // Save / load
+    var storageKey = "little-man-save-v1";
+    if (app.ports) {
+        app.ports.save.subscribe(function(data) {
+            localStorage.setItem(storageKey, data);
+        });
+
+        app.ports.clear.subscribe(function() {
+            localStorage.removeItem(storageKey);
+        });
+
+        app.ports.loadRequest.subscribe(function() {
+            var data = localStorage.getItem(storageKey);
+            app.ports.loadResponse.send(data);
+        });
+    } else {
+        console.warn("Elm ports not found! Make sure they are used in your Elm code.");
+    }
+    
     // --- AUDIO STATE ---
     let audioCtx = null;
     let soundsLoaded = false;

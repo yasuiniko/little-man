@@ -1,7 +1,7 @@
 module Domain.Store.View exposing (..)
 
 import Msg exposing (Msg(..))
-import Domain.Store.Model exposing (Item, itemMeta)
+import Domain.Store.Item exposing (Item, itemMeta)
 import Domain.Store.Utils exposing (calculateCost)
 import Html exposing (Html, button, div, img, span, text)
 import Html.Attributes exposing (class, disabled, src, style)

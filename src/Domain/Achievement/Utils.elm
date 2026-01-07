@@ -1,23 +1,16 @@
 module Domain.Achievement.Utils exposing (computeNewUnlocks, applyUnlocks, groupAchievements, checkAllDone)
 
-import Domain.Store.Model exposing (Item, ItemId)
+import Domain.Store.Item exposing (Item, ItemId(..))
 import Domain.Achievement.Model exposing (Achievement, AchievementKind(..), Model)
 import Dict exposing (Dict)
-import Domain.Store.Model exposing (ItemId(..))
 import Assets exposing (tiers)
-
-maybeMaxTier : Maybe Float
-maybeMaxTier = tiers
-    |> List.map (\t -> t.min)
-    |> List.maximum
 
 maxTier : Float
 maxTier = 
-    case maybeMaxTier of
-        Just f ->
-            f
-        Nothing ->
-            0
+    tiers
+        |> List.map (\t -> t.min)
+        |> List.maximum
+        |> Maybe.withDefault 0
 
 checkAllDone : List Achievement -> Float -> Bool
 checkAllDone achievements pps =
@@ -37,7 +30,7 @@ isUnlocked : Float -> List Item -> Achievement -> Bool
 isUnlocked modelTotalpoop modelItems ach =
     not ach.unlocked &&
     case ach.kind of
-        Totalpoop n -> modelTotalpoop >= n
+        TotalPoop n -> modelTotalpoop >= n
         OwnItem itemId qty -> hasQty itemId qty modelItems
 
 
@@ -61,7 +54,7 @@ applyUnlocks unlocked model =
 kindToString : AchievementKind -> String
 kindToString kind =
     case kind of 
-        Totalpoop _ -> 
+        TotalPoop _ -> 
             "01PoopCount"
         OwnItem Cursor _->
             "02Cursor"
