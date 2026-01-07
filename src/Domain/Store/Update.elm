@@ -38,11 +38,6 @@ updateStore msg model =
                 updatedModel = buyItem id model
             in
             updatedModel
-
-        Hover _ ->
-            model
-        Unhover ->
-            model
         -- KeyPressed "k" -> 
         --     { model | poopPerSecond = model.poopPerSecond * 1.5 + 1 }
         -- KeyPressed "x" -> 
@@ -52,6 +47,8 @@ updateStore msg model =
         --         updatedModel = { model | items = updatedItems, poop = max (15 * 1.15^ 65 + 1) model.poop }
         --     in
         --         updateStore (BuyItem Cursor) updatedModel
+        AchievementMsg _ ->
+            model
         AutoSave -> 
             model
         KeyPressed _ -> 

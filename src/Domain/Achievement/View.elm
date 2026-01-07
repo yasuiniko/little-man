@@ -1,7 +1,8 @@
 module Domain.Achievement.View exposing (viewAchievement)
 
 import Model exposing (config)
-import Msg exposing (Msg(..))
+import Msg as MainMsg
+import Domain.Achievement.Msg exposing (Msg(..))
 import Domain.Achievement.Model exposing (Achievement, AchievementKind(..), Model)
 import Html exposing (Html, div, text, Attribute, img)
 import Html.Attributes exposing (style, src)
@@ -9,7 +10,7 @@ import Html.Events exposing (onMouseEnter, onMouseLeave)
 
 
 -- STYLES
-achievementBoxStyle : Bool -> List (Attribute Msg)
+achievementBoxStyle : Bool -> List (Attribute MainMsg.Msg)
 achievementBoxStyle unlocked =
     [ style "position" "relative"
     , style "width" "40px"
@@ -23,7 +24,7 @@ achievementBoxStyle unlocked =
     , style "opacity" (if unlocked then "1" else "0.2")
     ]
 
-trophyStyle : Bool -> List (Attribute Msg)
+trophyStyle : Bool -> List (Attribute MainMsg.Msg)
 trophyStyle unlocked =
     [ style "font-size" "20px"
     , style "display" "flex"
@@ -31,7 +32,7 @@ trophyStyle unlocked =
     , style "justify-content" "center"
     ]
 
-tooltipStyle : Bool -> List (Attribute Msg)
+tooltipStyle : Bool -> List (Attribute MainMsg.Msg)
 tooltipStyle isVisible =
     [ style "position" "absolute"
     , style "top" "110%"
@@ -55,7 +56,7 @@ tooltipStyle isVisible =
     ]
 
 -- VIEWS
-trophyIcon : Achievement -> Html Msg
+trophyIcon : Achievement -> Html MainMsg.Msg
 trophyIcon ach =
     div (trophyStyle ach.unlocked)
         [ img
@@ -66,7 +67,7 @@ trophyIcon ach =
             [] 
         ]
 
-tooltipView : Bool -> Achievement -> Html Msg
+tooltipView : Bool -> Achievement -> Html MainMsg.Msg
 tooltipView isHovered ach =
     div (tooltipStyle isHovered)
         [ if ach.unlocked then
@@ -75,7 +76,7 @@ tooltipView isHovered ach =
               text ach.name
         ]
 
-viewAchievement : Model -> Achievement -> Html Msg
+viewAchievement : Model -> Achievement -> Html MainMsg.Msg
 viewAchievement model ach =
     let
         isHovered =
@@ -83,8 +84,8 @@ viewAchievement model ach =
     in
     div
         (achievementBoxStyle ach.unlocked
-            ++ [ onMouseEnter (Hover ach)
-               , onMouseLeave Unhover
+            ++ [ onMouseEnter (MainMsg.AchievementMsg (Hover ach))
+               , onMouseLeave (MainMsg.AchievementMsg Unhover)
                ]
         )
         [ trophyIcon ach

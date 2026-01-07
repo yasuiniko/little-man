@@ -5472,9 +5472,9 @@ var $author$project$Main$init = function (_v0) {
 		$author$project$Model$modelInit(0),
 		$author$project$Storage$loadRequest(0));
 };
-var $author$project$Msg$AutoSave = {$: 7};
+var $author$project$Msg$AutoSave = {$: 6};
 var $author$project$Msg$LoadedGame = function (a) {
-	return {$: 6, a: a};
+	return {$: 5, a: a};
 };
 var $author$project$Msg$Tick = function (a) {
 	return {$: 2, a: a};
@@ -6138,14 +6138,10 @@ var $author$project$Msg$BuyItem = function (a) {
 };
 var $author$project$Msg$Clickpoop = {$: 0};
 var $author$project$Model$ConfirmingReset = 1;
-var $author$project$Msg$Hover = function (a) {
-	return {$: 4, a: a};
-};
 var $author$project$Update$None = {$: 1};
 var $author$project$Update$Sound = function (a) {
 	return {$: 0, a: a};
 };
-var $author$project$Msg$Unhover = {$: 5};
 var $author$project$Storage$clear = _Platform_outgoingPort(
 	'clear',
 	function ($) {
@@ -7016,38 +7012,17 @@ var $author$project$Update$step = F2(
 	});
 var $author$project$Domain$Achievement$Update$updateAchievements = F2(
 	function (msg, model) {
-		switch (msg.$) {
-			case 4:
-				var ach = msg.a;
-				var modelWithHover = _Utils_update(
-					model,
-					{
-						aG: $elm$core$Maybe$Just(ach)
-					});
-				return modelWithHover;
-			case 5:
-				var modelWithoutHover = _Utils_update(
-					model,
-					{aG: $elm$core$Maybe$Nothing});
-				return modelWithoutHover;
-			case 7:
-				return model;
-			case 0:
-				return model;
-			case 2:
-				return model;
-			case 1:
-				return model;
-			case 3:
-				return model;
-			case 6:
-				return model;
-			case 8:
-				return model;
-			case 9:
-				return model;
-			default:
-				return model;
+		if (!msg.$) {
+			var ach = msg.a;
+			return _Utils_update(
+				model,
+				{
+					aG: $elm$core$Maybe$Just(ach)
+				});
+		} else {
+			return _Utils_update(
+				model,
+				{aG: $elm$core$Maybe$Nothing});
 		}
 	});
 var $author$project$Update$updateAchievementModel = F2(
@@ -7282,17 +7257,15 @@ var $author$project$Domain$Store$Update$updateStore = F2(
 				return updatedModel;
 			case 4:
 				return model;
+			case 6:
+				return model;
+			case 3:
+				return model;
 			case 5:
 				return model;
 			case 7:
 				return model;
-			case 3:
-				return model;
-			case 6:
-				return model;
 			case 8:
-				return model;
-			case 9:
 				return model;
 			default:
 				return model;
@@ -7354,7 +7327,7 @@ var $author$project$Update$update = F2(
 								$author$project$Update$updateStoreModel,
 								$author$project$Msg$Tick(time),
 								model))));
-			case 7:
+			case 6:
 				return $author$project$Update$withSaveCmd(model);
 			case 1:
 				var id = msg.a;
@@ -7366,25 +7339,19 @@ var $author$project$Update$update = F2(
 						$author$project$Msg$BuyItem(id),
 						model));
 			case 4:
-				var achievement = msg.a;
+				var achievementMsg = msg.a;
 				return $author$project$Update$withNoCmd(
-					A2(
-						$author$project$Update$updateAchievementModel,
-						$author$project$Msg$Hover(achievement),
-						model));
+					A2($author$project$Update$updateAchievementModel, achievementMsg, model));
 			case 5:
-				return $author$project$Update$withNoCmd(
-					A2($author$project$Update$updateAchievementModel, $author$project$Msg$Unhover, model));
-			case 6:
 				var maybeModelString = msg.a;
 				return $author$project$Update$withNoCmd(
 					$author$project$Update$decodeModel(maybeModelString));
-			case 8:
+			case 7:
 				return $author$project$Update$withNoCmd(
 					_Utils_update(
 						model,
 						{aL: 1}));
-			case 9:
+			case 8:
 				return $author$project$Update$withNoCmd(
 					_Utils_update(
 						model,
@@ -7420,7 +7387,7 @@ var $author$project$View$globalStyles = A3(
 		[
 			$elm$html$Html$text('\n        .app-container { max-width: 1100px; margin: 0 auto; }\n        .grid-layout { display: grid; grid-template-columns: 360px 1fr; gap: 24px; }\n        .panel { background: #0b1220; padding: 24px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.3); }\n        .btn-buy { background: linear-gradient(90deg, #f59e0b, #f97316); border: none; padding: 8px 16px; border-radius: 6px; color: #061421; font-weight: bold; cursor: pointer; transition: transform 0.1s; }\n        .btn-buy:active:not([disabled]) { transform: scale(0.95); }\n        .btn-buy:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }\n        \n        /* poop Animation */\n        .poop-btn { transition: transform 0.05s; user-select: none; cursor: pointer; display: block; margin: 0 auto; border-radius: 50%; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }\n        .poop-btn:active { transform: scale(0.94); }\n        \n        /* Animations for Notifications */\n        @keyframes slideIn {\n            from { transform: translateX(100%); opacity: 0; }\n            to { transform: translateX(0); opacity: 1; }\n        }\n        .notification-toast {\n            animation: slideIn 0.3s ease-out forwards;\n        }\n\n        @media (max-width: 800px) {\n            .grid-layout { grid-template-columns: 1fr; }\n        }\n        .btn-reset { \n            background: transparent; \n            border: 1px solid #ff4444; \n            color: #ff4444; \n            padding: 6px 12px; \n            border-radius: 4px; \n            cursor: pointer; \n            font-size: 12px; \n            transition: all 0.2s;\n            opacity: 0.7;\n        }\n        .btn-reset:hover { \n            background: #ff4444; \n            color: white; \n            opacity: 1;\n        }\n    ')
 		]));
-var $author$project$Msg$RequestReset = {$: 8};
+var $author$project$Msg$RequestReset = {$: 7};
 var $elm$html$Html$a = _VirtualDom_node('a');
 var $elm$html$Html$button = _VirtualDom_node('button');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
@@ -8024,6 +7991,13 @@ var $author$project$UI$StatBox$statBox = F2(
 						]))
 				]));
 	});
+var $author$project$Msg$AchievementMsg = function (a) {
+	return {$: 4, a: a};
+};
+var $author$project$Domain$Achievement$Msg$Hover = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Domain$Achievement$Msg$Unhover = {$: 1};
 var $author$project$Domain$Achievement$View$achievementBoxStyle = function (unlocked) {
 	return _List_fromArray(
 		[
@@ -8127,8 +8101,10 @@ var $author$project$Domain$Achievement$View$viewAchievement = F2(
 				_List_fromArray(
 					[
 						$elm$html$Html$Events$onMouseEnter(
-						$author$project$Msg$Hover(ach)),
-						$elm$html$Html$Events$onMouseLeave($author$project$Msg$Unhover)
+						$author$project$Msg$AchievementMsg(
+							$author$project$Domain$Achievement$Msg$Hover(ach))),
+						$elm$html$Html$Events$onMouseLeave(
+						$author$project$Msg$AchievementMsg($author$project$Domain$Achievement$Msg$Unhover))
 					])),
 			_List_fromArray(
 				[
@@ -8513,8 +8489,8 @@ var $author$project$View$rightPanelView = function (model) {
 					model.aX.aI))
 			]));
 };
-var $author$project$Msg$CancelReset = {$: 9};
-var $author$project$Msg$ConfirmReset = {$: 10};
+var $author$project$Msg$CancelReset = {$: 8};
+var $author$project$Msg$ConfirmReset = {$: 9};
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$View$viewModal = function (model) {
 	var _v0 = model.aL;

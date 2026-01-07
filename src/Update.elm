@@ -4,6 +4,7 @@ import Msg exposing (Msg(..))
 import Model exposing (Model, config, ModalState(..), modelCodec, modelInit)
 import Assets exposing (playSound)
 import Storage 
+import Domain.Achievement.Msg as Achievement
 import Domain.Achievement.Update exposing (updateAchievements)
 import Domain.Achievement.Utils exposing (computeNewUnlocks, applyUnlocks)
 import Domain.Notification.Model as Notification
@@ -47,14 +48,9 @@ update msg model =
                 |> updateStoreModel (BuyItem id)
                 |> handleAchievements (Sound "store")
             
-        Hover achievement -> 
+        AchievementMsg achievementMsg -> 
             model 
-                |> updateAchievementModel (Hover achievement)
-                |> withNoCmd
-
-        Unhover ->
-            model
-                |> updateAchievementModel Unhover
+                |> updateAchievementModel achievementMsg
                 |> withNoCmd
         LoadedGame maybeModelString ->
             decodeModel maybeModelString
@@ -79,7 +75,7 @@ decodeModel maybeString =
         |> Maybe.andThen (Codec.decodeString modelCodec >> Result.toMaybe)
         |> Maybe.withDefault (modelInit ())
 
-updateAchievementModel : Msg -> Model -> Model
+updateAchievementModel : Achievement.Msg -> Model -> Model
 updateAchievementModel msg model = 
     { model | achievementModel = updateAchievements msg model.achievementModel} 
 
