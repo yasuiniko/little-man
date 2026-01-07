@@ -68,7 +68,7 @@ initialAchievements =
       , kind = OwnItem Cursor 25
       }
     , { name = "Vlad the Poker"
-      , description = "\"We can always add another hole\""
+      , description = "\"We can always add another hole.\""
       , unlocked = False
       , kind = OwnItem Cursor 50
       }
@@ -115,7 +115,7 @@ initialAchievements =
       }
 
     , { name = "Farmin' Manure"
-      , description = "Own 1 Farm"
+      , description = "Own 1 Farm."
       , unlocked = False
       , kind = OwnItem Farm 1
       }
@@ -145,38 +145,6 @@ initialAchievements =
       , kind = OwnItem Farm 75
       }
 
-
-    , { name = "Industrial Revolution"
-      , description = "Plugging in the Spinning Jenny"
-      , unlocked = False
-      , kind = OwnItem Factory 1
-      }
-    , { name = "The Means of Production"
-      , description = "Straight siezin' it. and by it, lets just say. the pordoction."
-      , unlocked = False
-      , kind = OwnItem Factory 5
-      }
-    , { name = "Burgeoning Empire"
-      , description = "Just the tip"
-      , unlocked = False
-      , kind = OwnItem Factory 10
-      }
-    , { name = "The 1%"
-      , description = "Swimming in it"
-      , unlocked = False
-      , kind = OwnItem Factory 25
-      }
-    , { name = "Plutocrat"
-      , description = "Don't need to brown-nose anymore"
-      , unlocked = False
-      , kind = OwnItem Factory 50
-      }
-    , { name = "Brat Summer"
-      , description = "65 im (bumpin that)"
-      , unlocked = False
-      , kind = OwnItem Factory 65
-      }
-      
 
     , { name = "I Think I'm Getting the Black Lung, Pop"
       , description = "It's not very well ventilated down there."
@@ -208,6 +176,38 @@ initialAchievements =
       , unlocked = False
       , kind = OwnItem Mine 75
       }
+
+    , { name = "Industrial Revolution"
+      , description = "Mass production."
+      , unlocked = False
+      , kind = OwnItem Factory 1
+      }
+    , { name = "The Means of Production"
+      , description = "Straight siezin' it. and by it, lets just say. the pordoction."
+      , unlocked = False
+      , kind = OwnItem Factory 5
+      }
+    , { name = "Burgeoning Empire"
+      , description = "Just the tip."
+      , unlocked = False
+      , kind = OwnItem Factory 10
+      }
+    , { name = "The 1%"
+      , description = "Swimming in it."
+      , unlocked = False
+      , kind = OwnItem Factory 25
+      }
+    , { name = "Plutocrat"
+      , description = "Don't need to brown-nose anymore."
+      , unlocked = False
+      , kind = OwnItem Factory 50
+      }
+    , { name = "Brat Summer"
+      , description = "65 im (bumpin that)."
+      , unlocked = False
+      , kind = OwnItem Factory 65
+      }
+    
     ]
 
 init : () -> Model
